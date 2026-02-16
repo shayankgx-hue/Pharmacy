@@ -3,88 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shayan Pharmacy Pro+ Dark v4</title>
+<title>Shayan Pharmacy Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  color:#eee;
-  transition: background 0.8s;
-}
-.sidebar{
-  width:260px;
-  height:100vh;
-  position:fixed;
-  top:0;
-  left:0;
-  overflow-y:auto;
-  padding-top:30px;
-  backdrop-filter:blur(8px);
-  transition: background 0.8s;
-}
+body{margin:0;font-family:'Poppins',sans-serif;color:#eee;transition:background 0.8s;}
+.sidebar{width:260px;height:100vh;position:fixed;top:0;left:0;overflow-y:auto;padding-top:30px;backdrop-filter:blur(8px);transition: background 0.8s;}
 .sidebar::-webkit-scrollbar{width:8px;}
 .sidebar::-webkit-scrollbar-thumb{background: rgba(255,255,255,0.3); border-radius:4px;}
 .sidebar::-webkit-scrollbar-track{background: rgba(0,0,0,0.1);}
-.sidebar h2{
-  color:white;
-  text-align:center;
-  margin-bottom:40px;
-  font-family:'Roboto Slab',serif;
-}
-.sidebar a{
-  display:block;
-  color:white;
-  padding:14px 20px;
-  text-decoration:none;
-  font-weight:600;
-  margin:5px 10px;
-  border-radius:8px;
-  transition:0.3s;
-}
+.sidebar h2{color:white;text-align:center;margin-bottom:40px;font-family:'Roboto Slab',serif;}
+.sidebar a{display:block;color:white;padding:14px 20px;text-decoration:none;font-weight:600;margin:5px 10px;border-radius:8px;transition:0.3s;}
 .sidebar a:hover{opacity:0.8;}
-.main{
-  margin-left:260px;
-  padding:25px;
-  min-height:100vh;
-  transition: background 0.8s;
-}
-.card{
-  padding:18px;
-  border-radius:15px;
-  margin:12px 0;
-  box-shadow:0 8px 20px rgba(0,0,0,0.3);
-  transition:0.8s;
-}
-button{
-  padding:10px 18px;
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-  color:white;
-  transition:0.3s;
-}
+.main{margin-left:260px;padding:25px;min-height:100vh;transition: background 0.8s;}
+.card{padding:18px;border-radius:15px;margin:12px 0;box-shadow:0 8px 20px rgba(0,0,0,0.3);transition:0.8s;}
+button{padding:10px 18px;border:none;border-radius:8px;font-weight:600;cursor:pointer;color:white;transition:0.3s;}
 button:hover{opacity:0.8;}
-input, select, textarea{
-  padding:10px;margin:6px 0;width:100%;border-radius:8px;border:1px solid #555;background:#222;color:#eee;font-family:'Poppins',sans-serif;
-}
+input,select,textarea{padding:10px;margin:6px 0;width:100%;border-radius:8px;border:1px solid #555;background:#222;color:#eee;font-family:'Poppins',sans-serif;}
 img.medImg{width:100%;height:150px;object-fit:cover;border-radius:12px;}
 table{width:100%;border-collapse:collapse;margin-top:10px;}
 th,td{padding:12px;border-bottom:1px solid #555;text-align:left;color:#eee;}
 th{border-radius:8px;}
 .page{display:none;}
+#loginPage{display:block;text-align:center;padding-top:100px;}
 </style>
 </head>
 <body>
 
-<div class="sidebar">
-<h2>Shayan Pharmacy Dark</h2>
+<!-- Login Page -->
+<div id="loginPage">
+<h2>Admin Login</h2>
+<div class="card" style="max-width:400px;margin:auto;">
+<input type="text" id="username" placeholder="Username"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+<p style="margin-top:10px;">Username: <b>shayan</b> | Password: <b>123</b></p>
+</div>
+</div>
+
+<!-- Sidebar + Main -->
+<div class="sidebar" id="sidebar" style="display:none;">
+<h2>Shayan Pharmacy Admin</h2>
 <a onclick="showPage('dashboard')">Dashboard</a>
 <a onclick="showPage('medicines')">Medicines</a>
 <a onclick="showPage('orders')">Orders</a>
 <a onclick="showPage('admin')">Admin Panel</a>
-<a onclick="showPage('prescription')">Prescription Upload</a>
 <a onclick="showPage('offers')">Offers</a>
 <a onclick="showPage('blog')">Health Tips</a>
 <a onclick="showPage('about')">About Us</a>
@@ -104,12 +66,12 @@ th{border-radius:8px;}
 <a onclick="showPage('events')">Events Calendar</a>
 </div>
 
-<div class="main">
+<div class="main" id="mainContent" style="display:none;">
 
 <!-- Dashboard -->
 <div id="dashboard" class="page">
 <h2>Dashboard</h2>
-<div class="card" id="dashboardStats">Loading stats...</div>
+<div class="card">Welcome to Shayan Pharmacy Admin Panel. All metrics will appear here.</div>
 </div>
 
 <!-- Medicines -->
@@ -129,13 +91,6 @@ th{border-radius:8px;}
 Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</span><br>
 <button onclick="placeOrder()">Place Order</button>
 </div>
-</div>
-
-<!-- Orders -->
-<div id="orders" class="page">
-<h2>Orders</h2>
-<ul id="orderList"></ul>
-<a id="whatsappBtn" target="_blank">Send Order on WhatsApp</a>
 </div>
 
 <!-- Admin Panel -->
@@ -160,65 +115,43 @@ Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</s
 <button onclick="addOrUpdateMedicine()">Add / Update</button>
 </div>
 
-<!-- Prescription Upload -->
-<div id="prescription" class="page">
-<h2>Upload Prescription</h2>
-<input type="file" id="prescriptionFile"><br><br>
-<button onclick="uploadPrescription()">Upload</button>
-<p id="uploadedFile"></p>
-</div>
-
-<!-- Offers Page -->
-<div id="offers" class="page">
-<h2>Special Offers</h2>
-<div class="card">
-<h3>Buy 1 Get 1 Free on Vitamins</h3>
-<p>All Vitamin C, D, and Multivitamin packs are available as Buy 1 Get 1 Free. Maintain your immunity and stay healthy during seasonal changes. Offer valid till end of this month. Limited stocks available.</p>
-</div>
-<div class="card">
-<h3>Discount on Pain Relief Medicines</h3>
-<p>Paracetamol, Ibuprofen, and other pain relief tablets are available at 20% off this week. Perfect for managing minor aches and fever. Available in-store and online for fast delivery.</p>
-</div>
-</div>
-
-<!-- Health Tips Page -->
-<div id="blog" class="page">
-<h2>Health Tips</h2>
-<div class="card">
-<h3>Stay Hydrated</h3>
-<p>Drinking at least 8 glasses of water daily is crucial for your overall health. Proper hydration helps maintain body temperature, remove toxins, and improve skin health. Increase intake during hot weather or exercise.</p>
-</div>
-<div class="card">
-<h3>Balanced Diet</h3>
-<p>Include fresh vegetables, fruits, and proteins in your daily diet. Avoid excessive sugar and processed foods. A balanced diet maintains energy levels and supports immune function. Consult our pharmacists for nutritional supplements if needed.</p>
-</div>
-</div>
-
-<!-- About Page -->
-<div id="about" class="page">
-<h2>About Us</h2>
-<div class="card">
-<p>Shayan Pharmacy has been serving the community for over 15 years, providing high-quality medicines and healthcare products. Our mission is to ensure affordable access to medicines while offering personalized customer support. Our trained pharmacists are available for consultations and health guidance every day.</p>
-<p>We also provide home delivery services, online orders, and prescription management to make healthcare convenient and reliable for all our customers.</p>
-</div>
-</div>
-
-<!-- Contact Page -->
-<div id="contact" class="page">
-<h2>Contact Us</h2>
-<div class="card">
-<p>Have questions or need guidance on medicines? Reach out to our support team via the contact form below or call us directly. Available 7 days a week for inquiries regarding product availability, orders, or health consultations.</p>
-<input placeholder="Your Name">
-<input placeholder="Email Address">
-<textarea placeholder="Your Message"></textarea>
-<button>Send Message</button>
-</div>
-</div>
-
-<!-- Other pages like Profile, Testimonials, FAQ, Membership, News, Newsletter, Doctor Consultation, Delivery Info, Reminders, Calculator, Special, Notifications, Events -->
-<!-- For brevity, same structure: <div class="card">Realistic placeholder content with 3-4 lines of text</div> -->
+<!-- Placeholder Pages -->
+<div id="orders" class="page"><h2>Orders</h2><div class="card">Content will be updated soon.</div></div>
+<div id="offers" class="page"><h2>Offers</h2><div class="card">Content will be updated soon.</div></div>
+<div id="blog" class="page"><h2>Health Tips</h2><div class="card">Content will be updated soon.</div></div>
+<div id="about" class="page"><h2>About Us</h2><div class="card">Content will be updated soon.</div></div>
+<div id="contact" class="page"><h2>Contact</h2><div class="card">Content will be updated soon.</div></div>
+<div id="profile" class="page"><h2>Profile</h2><div class="card">Content will be updated soon.</div></div>
+<div id="testimonials" class="page"><h2>Testimonials</h2><div class="card">Content will be updated soon.</div></div>
+<div id="faq" class="page"><h2>FAQ</h2><div class="card">Content will be updated soon.</div></div>
+<div id="membership" class="page"><h2>Membership</h2><div class="card">Content will be updated soon.</div></div>
+<div id="news" class="page"><h2>News/Events</h2><div class="card">Content will be updated soon.</div></div>
+<div id="newsletter" class="page"><h2>Newsletter</h2><div class="card">Content will be updated soon.</div></div>
+<div id="doctor" class="page"><h2>Doctor Consultation</h2><div class="card">Content will be updated soon.</div></div>
+<div id="delivery" class="page"><h2>Delivery Info</h2><div class="card">Content will be updated soon.</div></div>
+<div id="reminders" class="page"><h2>Medicine Reminders</h2><div class="card">Content will be updated soon.</div></div>
+<div id="calculator" class="page"><h2>Health Calculator</h2><div class="card">Content will be updated soon.</div></div>
+<div id="special" class="page"><h2>Special Categories</h2><div class="card">Content will be updated soon.</div></div>
+<div id="notifications" class="page"><h2>User Notifications</h2><div class="card">Content will be updated soon.</div></div>
+<div id="events" class="page"><h2>Events Calendar</h2><div class="card">Content will be updated soon.</div></div>
 
 <script>
+// ----- Login -----
+function login(){
+  let user=document.getElementById('username').value;
+  let pass=document.getElementById('password').value;
+  if(user==='shayan' && pass==='123'){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('sidebar').style.display='block';
+    document.getElementById('mainContent').style.display='block';
+    applyDynamicColors();
+    showPage('dashboard');
+    loadMedicines(document.getElementById('medicineList'));
+    loadMedicines(document.getElementById('adminMedList'),true);
+    loadCategoryFilter();
+  }else{alert("Wrong Username or Password");}
+}
+
 // ----- Dynamic Colors -----
 function randomColor(){return `hsl(${Math.floor(Math.random()*360)},40%,20%)`;}
 function applyDynamicColors(){
@@ -230,7 +163,7 @@ function applyDynamicColors(){
 // ----- Page Navigation -----
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.style.display='none'); document.getElementById(id).style.display='block';}
 
-// ----- Medicines Sample -----
+// ----- Medicines -----
 var medicines=[
 {name:"Paracetamol",price:50,image:"https://images.unsplash.com/photo-1604014232412-9d153f9fc2e1?auto=format&w=500",category:"Tablets"},
 {name:"Ibuprofen",price:80,image:"https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&w=500",category:"Tablets"},
@@ -239,14 +172,12 @@ var medicines=[
 {name:"Cough Syrup",price:90,image:"https://images.unsplash.com/photo-1599288892404-03cf17cbcb3a?auto=format&w=500",category:"Syrups"}
 ];
 
-// ----- Filter & Category -----
 function loadCategoryFilter(){
   let filter=document.getElementById('filterCategory');
   let cats=[...new Set(medicines.map(m=>m.category))];
   cats.forEach(c=>{if(!Array.from(filter.options).some(o=>o.value===c))filter.add(new Option(c,c))});
 }
 
-// ----- Load Medicines -----
 function loadMedicines(listElement, admin=false){
   listElement.innerHTML="";
   medicines.forEach((m,i)=>{
@@ -286,19 +217,7 @@ function updateCart(){
 // ----- Orders -----
 var orders=[];
 function placeOrder(){ if(cart.length==0){alert("Cart empty"); return;}
-orders.push([...cart]); cart=[]; updateCart(); generateInvoice();}
-function generateInvoice(){
-  let text="Shayan Pharmacy Order\n";
-  orders[orders.length-1].forEach(i=>text+=`${i.name} - Rs ${i.price}\n`);
-  text+="Total: Rs "+orders[orders.length-1].reduce((a,b)=>a+b.price,0);
-  document.getElementById("whatsappBtn").href="https://wa.me/923XXXXXXXXX?text="+encodeURIComponent(text);
-  let list=document.getElementById("orderList"); list.innerHTML="";
-  orders.forEach((o,idx)=>{
-    let li=document.createElement("li");
-    li.innerText=`Order ${idx+1}: ${o.map(x=>x.name).join(", ")} | Rs ${o.reduce((a,b)=>a+b.price,0)}`;
-    list.appendChild(li);
-  });
-}
+orders.push([...cart]); cart=[]; updateCart();}
 
 // ----- Admin -----
 function addOrUpdateMedicine(){
@@ -308,7 +227,8 @@ function addOrUpdateMedicine(){
   let category=document.getElementById("medCategory").value;
   if(!name||!price||!image){alert("Enter all fields"); return;}
   medicines.push({name,price,image,category});
-  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
+  loadMedicines(document.getElementById('medicineList'));
+  loadMedicines(document.getElementById('adminMedList'),true);
   loadCategoryFilter();
   alert("Medicine Added");
 }
@@ -342,13 +262,6 @@ function filterAndSort(){
     list.appendChild(div);
   });
 }
-
-// ----- Init -----
-applyDynamicColors();
-showPage('dashboard');
-loadMedicines(document.getElementById('medicineList'));
-loadMedicines(document.getElementById('adminMedList'),true);
-loadCategoryFilter();
 </script>
 </body>
 </html>
