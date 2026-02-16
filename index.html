@@ -3,30 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shayan Pharmacy Pro+ v3</title>
+<title>Shayan Pharmacy Pro+ Dark v4</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
 <style>
-/* ----- Global ----- */
+/* ----- Fonts ----- */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  color:#333;
-  background-image:url('https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=1470&q=80');
-  background-size:cover;
-  background-attachment:fixed;
+  color:#eee;
+  transition: background 0.8s;
 }
-
-/* ----- Sidebar ----- */
 .sidebar{
   width:260px;
   height:100vh;
   position:fixed;
   top:0;
   left:0;
-  background-image:url('https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=800&q=60');
-  background-size:cover;
   backdrop-filter:blur(8px);
   padding-top:30px;
+  transition: background 0.8s;
 }
 .sidebar h2{
   color:white;
@@ -42,90 +37,44 @@ body{
   font-weight:600;
   margin:5px 10px;
   border-radius:8px;
-  transition:0.2s;
-  background:rgba(0,100,0,0.3);
+  transition:0.3s;
 }
-.sidebar a:hover{
-  background:rgba(255,255,255,0.2);
-}
-
-/* ----- Main ----- */
+.sidebar a:hover{opacity:0.8;}
 .main{
   margin-left:260px;
   padding:25px;
   min-height:100vh;
-  backdrop-filter:blur(3px);
+  transition: background 0.8s;
 }
-
-/* ----- Cards ----- */
 .card{
-  background:linear-gradient(135deg,#fffbe6,#e6fff2);
   padding:18px;
   border-radius:15px;
   margin:12px 0;
-  box-shadow:0 8px 20px rgba(0,0,0,0.15);
-  transition:0.3s;
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  transition:0.8s;
 }
-.card:hover{box-shadow:0 12px 25px rgba(0,0,0,0.25);}
-
-/* ----- Buttons ----- */
 button{
   padding:10px 18px;
   border:none;
   border-radius:8px;
-  background:linear-gradient(135deg,#9b5de5,#3f37c9);
-  color:white;
-  cursor:pointer;
   font-weight:600;
+  cursor:pointer;
+  color:white;
   transition:0.3s;
 }
-button:hover{
-  background:linear-gradient(135deg,#3f37c9,#9b5de5);
-}
-
-/* ----- Inputs ----- */
-input, select, textarea{
-  padding:10px;
-  margin:6px 0;
-  width:100%;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-family:'Poppins',sans-serif;
-}
-
-/* ----- Images ----- */
-img.medImg{
-  width:100%;
-  height:150px;
-  object-fit:cover;
-  border-radius:12px;
-}
-
-/* ----- Table ----- */
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
-}
-th,td{
-  padding:12px;
-  border-bottom:1px solid #ccc;
-  text-align:left;
-}
-th{
-  background:linear-gradient(135deg,#9b5de5,#3f37c9);
-  color:white;
-  border-radius:8px;
-}
-
-/* ----- Sections ----- */
+button:hover{opacity:0.8;}
+input, select, textarea{padding:10px;margin:6px 0;width:100%;border-radius:8px;border:1px solid #555;background:#222;color:#eee;font-family:'Poppins',sans-serif;}
+img.medImg{width:100%;height:150px;object-fit:cover;border-radius:12px;}
+table{width:100%;border-collapse:collapse;margin-top:10px;}
+th,td{padding:12px;border-bottom:1px solid #555;text-align:left;color:#eee;}
+th{border-radius:8px;}
 .page{display:none;}
 </style>
 </head>
 <body>
 
 <div class="sidebar">
-<h2>Shayan Pharmacy Pro+</h2>
+<h2>Shayan Pharmacy Dark</h2>
 <a onclick="showPage('dashboard')">Dashboard</a>
 <a onclick="showPage('medicines')">Medicines</a>
 <a onclick="showPage('orders')">Orders</a>
@@ -141,18 +90,20 @@ th{
 <a onclick="showPage('membership')">Membership</a>
 <a onclick="showPage('news')">News/Events</a>
 <a onclick="showPage('newsletter')">Newsletter</a>
+<a onclick="showPage('doctor')">Doctor Consultation</a>
+<a onclick="showPage('delivery')">Delivery Info</a>
+<a onclick="showPage('reminders')">Medicine Reminders</a>
+<a onclick="showPage('calculator')">Health Calculator</a>
+<a onclick="showPage('special')">Special Categories</a>
+<a onclick="showPage('notifications')">User Notifications</a>
+<a onclick="showPage('events')">Events Calendar</a>
 </div>
 
 <div class="main">
-
 <!-- Dashboard -->
 <div id="dashboard" class="page">
 <h2>Dashboard</h2>
-<div class="card">Total Medicines: <span id="totalMeds">0</span></div>
-<div class="card">Cart Items: <span id="cartCount">0</span></div>
-<div class="card">Total Orders: <span id="totalOrders">0</span></div>
-<div class="card">Total Revenue: Rs <span id="totalRevenue">0</span></div>
-<div class="card">Category Stats: <span id="categoryStats"></span></div>
+<div class="card" id="dashboardStats"></div>
 </div>
 
 <!-- Medicines -->
@@ -197,11 +148,13 @@ Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</s
 <option value="Syrups">Syrups</option>
 <option value="Vitamins">Vitamins</option>
 <option value="Others">Others</option>
+<option value="BabyCare">Baby Care</option>
+<option value="SkinCare">Skin Care</option>
 </select>
 <button onclick="addOrUpdateMedicine()">Add / Update</button>
 </div>
 
-<!-- Prescription -->
+<!-- Prescription Upload -->
 <div id="prescription" class="page">
 <h2>Upload Prescription</h2>
 <input type="file" id="prescriptionFile"><br><br>
@@ -209,23 +162,38 @@ Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</s
 <p id="uploadedFile"></p>
 </div>
 
-<!-- Other pages like Offers, Blog, About, Contact, Profile, Testimonials, FAQ, Membership, News, Newsletter same as previous (can reuse cards) -->
-<div id="offers" class="page"><h2>Special Offers</h2><div class="card"><h3>Buy 1 Get 1 Free on Vitamins</h3><p>Valid till end of this month!</p></div></div>
-<div id="blog" class="page"><h2>Health Tips</h2><div class="card"><h3>Stay Hydrated</h3><p>Drink at least 8 glasses of water daily.</p></div></div>
-<div id="about" class="page"><h2>About Us</h2><div class="card"><p>Trusted pharmacy with fast delivery.</p></div></div>
-<div id="contact" class="page"><h2>Contact Us</h2><div class="card"><input placeholder="Name"><input placeholder="Email"><textarea placeholder="Message"></textarea><button>Send</button></div></div>
-<div id="profile" class="page"><h2>Profile</h2><div class="card"><p>User Profile placeholder</p></div></div>
-<div id="testimonials" class="page"><h2>Testimonials</h2><div class="card"><p>"Excellent service!"</p></div></div>
-<div id="faq" class="page"><h2>FAQ</h2><div class="card"><p>Q&A placeholder</p></div></div>
-<div id="membership" class="page"><h2>Membership</h2><div class="card"><p>Join loyalty program</p></div></div>
-<div id="news" class="page"><h2>News & Events</h2><div class="card"><p>Latest updates here</p></div></div>
-<div id="newsletter" class="page"><h2>Newsletter</h2><div class="card"><input placeholder="Email"><button>Subscribe</button></div></div>
+<!-- Placeholder pages for other options -->
+<div id="offers" class="page"><h2>Offers</h2><div class="card">Special offers placeholder</div></div>
+<div id="blog" class="page"><h2>Health Tips</h2><div class="card">Health tips placeholder</div></div>
+<div id="about" class="page"><h2>About Us</h2><div class="card">About placeholder</div></div>
+<div id="contact" class="page"><h2>Contact</h2><div class="card">Contact form placeholder</div></div>
+<div id="profile" class="page"><h2>Profile</h2><div class="card">Profile placeholder</div></div>
+<div id="testimonials" class="page"><h2>Testimonials</h2><div class="card">Testimonials placeholder</div></div>
+<div id="faq" class="page"><h2>FAQ</h2><div class="card">FAQ placeholder</div></div>
+<div id="membership" class="page"><h2>Membership</h2><div class="card">Membership placeholder</div></div>
+<div id="news" class="page"><h2>News/Events</h2><div class="card">News placeholder</div></div>
+<div id="newsletter" class="page"><h2>Newsletter</h2><div class="card">Newsletter placeholder</div></div>
+<div id="doctor" class="page"><h2>Doctor Consultation</h2><div class="card">Doctor consultation placeholder</div></div>
+<div id="delivery" class="page"><h2>Delivery Info</h2><div class="card">Delivery info placeholder</div></div>
+<div id="reminders" class="page"><h2>Medicine Reminders</h2><div class="card">Reminders placeholder</div></div>
+<div id="calculator" class="page"><h2>Health Calculator</h2><div class="card">BMI / Health calculator placeholder</div></div>
+<div id="special" class="page"><h2>Special Categories</h2><div class="card">Special categories placeholder</div></div>
+<div id="notifications" class="page"><h2>User Notifications</h2><div class="card">Notifications placeholder</div></div>
+<div id="events" class="page"><h2>Events Calendar</h2><div class="card">Events placeholder</div></div>
 
 <script>
-// Pages Navigation
+// Dynamic Background / Card colors
+function randomColor(){return `hsl(${Math.floor(Math.random()*360)},40%,20%)`;}
+function applyDynamicColors(){
+  document.body.style.background=randomColor();
+  document.querySelectorAll('.sidebar').forEach(s=>s.style.background=randomColor());
+  document.querySelectorAll('.card').forEach(c=>c.style.background=randomColor());
+}
+
+// Page Navigation
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.style.display='none'); document.getElementById(id).style.display='block';}
 
-// Medicines Sample 30+
+// Medicines sample
 var medicines=[
 {name:"Paracetamol",price:50,image:"https://images.unsplash.com/photo-1604014232412-9d153f9fc2e1?auto=format&w=500",category:"Tablets"},
 {name:"Ibuprofen",price:80,image:"https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&w=500",category:"Tablets"},
@@ -234,14 +202,14 @@ var medicines=[
 {name:"Cough Syrup",price:90,image:"https://images.unsplash.com/photo-1599288892404-03cf17cbcb3a?auto=format&w=500",category:"Syrups"}
 ];
 
-// Load medicines dropdown
+// Filter & Category
 function loadCategoryFilter(){
   let filter=document.getElementById('filterCategory');
   let cats=[...new Set(medicines.map(m=>m.category))];
   cats.forEach(c=>{if(!Array.from(filter.options).some(o=>o.value===c))filter.add(new Option(c,c))});
 }
 
-// Load Medicines
+// Load medicines
 function loadMedicines(listElement, admin=false){
   listElement.innerHTML="";
   medicines.forEach((m,i)=>{
@@ -259,11 +227,66 @@ function loadMedicines(listElement, admin=false){
         <option ${m.category==='Syrups'?'selected':''}>Syrups</option>
         <option ${m.category==='Vitamins'?'selected':''}>Vitamins</option>
         <option ${m.category==='Others'?'selected':''}>Others</option>
+        <option ${m.category==='BabyCare'?'selected':''}>BabyCare</option>
+        <option ${m.category==='SkinCare'?'selected':''}>SkinCare</option>
       </select></td>
       <td><button onclick="deleteMedicine(${i})">Delete</button></td>`;
       listElement.appendChild(tr);
     }
   });
+}
+
+// Cart
+var cart=[];
+function addToCart(idx){cart.push(medicines[idx]); updateCart();}
+function removeFromCart(idx){cart.splice(idx,1); updateCart();}
+function updateCart(){
+  let total=0; cart.forEach(c=>total+=c.price);
+  document.getElementById("cartCount2").innerText=cart.length;
+  document.getElementById("cartTotal").innerText=total;
+}
+
+// Orders
+var orders=[];
+function placeOrder(){ if(cart.length==0){alert("Cart empty"); return;}
+orders.push([...cart]); cart=[]; updateCart(); generateInvoice();}
+function generateInvoice(){
+  let text="Shayan Pharmacy Order\n";
+  orders[orders.length-1].forEach(i=>text+=`${i.name} - Rs ${i.price}\n`);
+  text+="Total: Rs "+orders[orders.length-1].reduce((a,b)=>a+b.price,0);
+  document.getElementById("whatsappBtn").href="https://wa.me/923XXXXXXXXX?text="+encodeURIComponent(text);
+  let list=document.getElementById("orderList"); list.innerHTML="";
+  orders.forEach((o,idx)=>{
+    let li=document.createElement("li");
+    li.innerText=`Order ${idx+1}: ${o.map(x=>x.name).join(", ")} | Rs ${o.reduce((a,b)=>a+b.price,0)}`;
+    list.appendChild(li);
+  });
+}
+
+// Admin
+function addOrUpdateMedicine(){
+  let name=document.getElementById("medName").value;
+  let price=parseInt(document.getElementById("medPrice").value);
+  let image=document.getElementById("medImageURL").value;
+  let category=document.getElementById("medCategory").value;
+  if(!name||!price||!image){alert("Enter all fields"); return;}
+  medicines.push({name,price,image,category});
+  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
+  loadCategoryFilter();
+  alert("Medicine Added");
+}
+function editMedicine(idx,field,value){
+  if(field==='price') value=parseInt(value);
+  medicines[idx][field]=value;
+  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
+}
+function deleteMedicine(idx){if(confirm("Delete this medicine?")){medicines.splice(idx,1);loadMedicines(document.getElementById('medicineList'));loadMedicines(document.getElementById('adminMedList'),true);}}
+
+// Prescription Upload
+function uploadPrescription(){
+  let file=document.getElementById('prescriptionFile').files[0];
+  if(file) document.getElementById('uploadedFile').innerText="Uploaded: "+file.name;
+  else alert("Select a file");
 }
 
 // Filter & Sort
@@ -283,78 +306,9 @@ function filterAndSort(){
   });
 }
 
-// Edit medicine
-function editMedicine(idx,field,value){
-  if(field==='price') value=parseInt(value);
-  medicines[idx][field]=value;
-  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
-  updateDashboard();
-}
-
-// Cart
-var cart=[];
-function addToCart(idx){cart.push(medicines[idx]); updateCart();}
-function removeFromCart(idx){cart.splice(idx,1); updateCart();}
-function updateCart(){
-  let total=0; cart.forEach(c=>total+=c.price);
-  document.getElementById("cartCount").innerText=cart.length;
-  document.getElementById("cartCount2").innerText=cart.length;
-  document.getElementById("cartTotal").innerText=total;
-  updateDashboard();
-}
-
-// Orders
-var orders=[];
-function placeOrder(){ if(cart.length==0){alert("Cart empty"); return;}
-orders.push([...cart]); cart=[]; updateCart(); alert("Order placed"); generateInvoice();}
-function generateInvoice(){
-  let text="Shayan Pharmacy Order\n";
-  orders[orders.length-1].forEach(i=>text+=`${i.name} - Rs ${i.price}\n`);
-  text+="Total: Rs "+orders[orders.length-1].reduce((a,b)=>a+b.price,0);
-  document.getElementById("whatsappBtn").href="https://wa.me/923XXXXXXXXX?text="+encodeURIComponent(text);
-  let list=document.getElementById("orderList"); list.innerHTML="";
-  orders.forEach((o,idx)=>{
-    let li=document.createElement("li");
-    li.innerText=`Order ${idx+1}: ${o.map(x=>x.name).join(", ")} | Rs ${o.reduce((a,b)=>a+b.price,0)}`;
-    list.appendChild(li);
-  });
-  updateDashboard();
-}
-
-// Admin Add / Update
-function addOrUpdateMedicine(){
-  let name=document.getElementById("medName").value;
-  let price=parseInt(document.getElementById("medPrice").value);
-  let image=document.getElementById("medImageURL").value;
-  let category=document.getElementById("medCategory").value;
-  if(!name||!price||!image){alert("Enter all fields"); return;}
-  medicines.push({name,price,image,category});
-  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
-  loadCategoryFilter();
-  alert("Medicine Added");
-}
-
-// Admin Delete
-function deleteMedicine(idx){ if(confirm("Delete this medicine?")){medicines.splice(idx,1); loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true); updateDashboard();}}
-
-// Prescription Upload
-function uploadPrescription(){
-  let file=document.getElementById('prescriptionFile').files[0];
-  if(file) document.getElementById('uploadedFile').innerText="Uploaded: "+file.name;
-  else alert("Select a file");
-}
-
-// Dashboard Update
-function updateDashboard(){
-  document.getElementById('totalMeds').innerText=medicines.length;
-  document.getElementById('totalOrders').innerText=orders.length;
-  document.getElementById('totalRevenue').innerText=orders.reduce((a,o)=>a+o.reduce((x,y)=>x+y.price,0),0);
-  let cats={}; medicines.forEach(m=>cats[m.category]=(cats[m.category]||0)+1);
-  document.getElementById('categoryStats').innerText=Object.entries(cats).map(e=>e[0]+":"+e[1]).join(", ");
-}
-
 // Init
-showPage('dashboard'); loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true); loadCategoryFilter(); updateDashboard();
+applyDynamicColors();
+showPage('dashboard'); loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true); loadCategoryFilter();
 </script>
 </body>
 </html>
