@@ -6,202 +6,121 @@
 <title>Shayan Pharmacy – Full Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:'Poppins',sans-serif;background: linear-gradient(120deg,#f9fbe7,#e0f7fa);color:#333;}
-.sidebar{width:260px;height:100vh;position:fixed;top:0;left:0;overflow-y:auto;padding-top:30px;background: linear-gradient(180deg,#c5e1a5,#aed581);box-shadow: 3px 0 8px rgba(0,0,0,0.2);}
-.sidebar::-webkit-scrollbar{width:8px;}
-.sidebar::-webkit-scrollbar-thumb{background: rgba(0,0,0,0.2); border-radius:4px;}
-.sidebar::-webkit-scrollbar-track{background: rgba(0,0,0,0.05);}
-.sidebar h2{color:#1b5e20;text-align:center;margin-bottom:40px;font-family:'Roboto Slab', serif;}
-.sidebar a{display:block;color:#1b5e20;padding:14px 20px;text-decoration:none;font-weight:600;margin:5px 10px;border-radius:8px;transition:0.3s;}
-.sidebar a:hover{background:#aed581;color:#fff;}
-.main{margin-left:260px;padding:25px;min-height:100vh;}
-.card{padding:18px;border-radius:15px;margin:12px 0;background:#fffde7;color:#333;box-shadow:0 8px 20px rgba(0,0,0,0.1);transition:0.3s;}
-button{padding:10px 18px;border:none;border-radius:8px;font-weight:600;cursor:pointer;background: linear-gradient(45deg,#aed581,#7cb342);color:#fff;transition:0.3s;}
-button:hover{opacity:0.85;}
-input,select,textarea{padding:10px;margin:6px 0;width:100%;border-radius:8px;border:1px solid #aaa;background:#f1f8e9;color:#333;font-family:'Poppins',sans-serif;}
-img.medImg{width:100%;height:150px;object-fit:cover;border-radius:12px;}
-table{width:100%;border-collapse:collapse;margin-top:10px;}
-th,td{padding:12px;border-bottom:1px solid #ccc;text-align:left;color:#333;}
-th{border-radius:8px;}
-.page{display:none;}
-#loginPage{display:block;text-align:center;padding-top:100px;}
+/* Your existing styles */
 </style>
 </head>
 <body>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
+<script>
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+</script>
 
 <!-- Login Page -->
 <div id="loginPage">
 <h2>Admin Login</h2>
 <div class="card" style="max-width:400px;margin:auto;">
-<input type="text" id="username" placeholder="Username"><br>
-<input type="password" id="password" placeholder="Password"><br>
-<button onclick="login()">Login</button>
+  <input type="email" id="login-email" placeholder="Email" required><br>
+  <input type="password" id="login-password" placeholder="Password" required><br>
+  <button onclick="login()">Login</button><br>
+  <p>Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
+</div>
+</div>
+
+<!-- Sign-Up Page -->
+<div id="signUpPage" style="display:none;">
+<h2>Admin Sign Up</h2>
+<div class="card" style="max-width:400px;margin:auto;">
+  <input type="email" id="signUp-email" placeholder="Email" required><br>
+  <input type="password" id="signUp-password" placeholder="Password" required><br>
+  <button onclick="signUp()">Sign Up</button>
+  <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
 </div>
 </div>
 
 <!-- Sidebar + Main -->
 <div class="sidebar" id="sidebar" style="display:none;">
-<h2>Shayan Pharmacy Admin</h2>
-<a onclick="showPage('dashboard')">Dashboard</a>
-<a onclick="showPage('medicines')">Medicines</a>
-<a onclick="showPage('orders')">Orders</a>
-<a onclick="showPage('admin')">Admin Panel</a>
-<a onclick="showPage('offers')">Offers</a>
-<a onclick="showPage('blog')">Health Tips</a>
-<a onclick="showPage('about')">About Us</a>
-<a onclick="showPage('contact')">Contact</a>
-<a onclick="showPage('faq')">FAQ</a>
-<a onclick="showPage('delivery')">Delivery Info</a>
-<a onclick="showPage('doctor')">Doctor Consultation</a>
-<a onclick="showPage('profile')">Profile</a>
-<a onclick="showPage('membership')">Membership</a>
-<a onclick="showPage('newsletter')">Newsletter</a>
-<a onclick="showPage('events')">Events Calendar</a>
-<a onclick="showPage('notifications')">User Notifications</a>
+  <h2>Shayan Pharmacy Admin</h2>
+  <a onclick="showPage('dashboard')">Dashboard</a>
+  <!-- Your other sidebar links -->
 </div>
 
 <div class="main" id="mainContent" style="display:none;">
-
-<!-- Dashboard -->
-<div id="dashboard" class="page">
-<h2>Dashboard</h2>
-<div class="card">Welcome to Shayan Pharmacy Admin Panel. Track medicines, orders, offers, health tips, and user interactions from here.</div>
-</div>
-
-<!-- Medicines -->
-<div id="medicines" class="page">
-<h2>Medicines</h2>
-<select id="filterCategory" onchange="filterAndSort()"><option value="All">All Categories</option></select>
-<select id="sortPrice" onchange="filterAndSort()">
-<option value="none">Sort by Price</option>
-<option value="asc">Low → High</option>
-<option value="desc">High → Low</option>
-</select>
-<input type="text" id="search" placeholder="Search Medicine" onkeyup="filterAndSort()">
-<div id="medicineList"></div>
-<div class="card">Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</span><br><button onclick="placeOrder()">Place Order</button></div>
-</div>
-
-<!-- Admin Panel -->
-<div id="admin" class="page">
-<h2>Admin Panel</h2>
-<table>
-<thead><tr><th>Name</th><th>Price</th><th>Image</th><th>Category</th><th>Actions</th></tr></thead>
-<tbody id="adminMedList"></tbody>
-</table>
-<h3>Add / Update Medicine</h3>
-<input type="text" id="medName" placeholder="Name">
-<input type="number" id="medPrice" placeholder="Price">
-<input type="text" id="medImageURL" placeholder="Image URL">
-<select id="medCategory">
-<option value="Tablets">Tablets</option>
-<option value="Syrups">Syrups</option>
-<option value="Vitamins">Vitamins</option>
-<option value="Others">Others</option>
-<option value="BabyCare">Baby Care</option>
-<option value="SkinCare">Skin Care</option>
-</select>
-<button onclick="addOrUpdateMedicine()">Add / Update</button>
-</div>
-
-<!-- Realistic Pages -->
-<div id="orders" class="page"><h2>Orders</h2><div class="card">Track all customer orders here. View status, delivery details, and payment information for each order.</div></div>
-
-<div id="offers" class="page"><h2>Offers</h2><div class="card"><ul><li>20% off on cough syrups</li><li>Buy 2 Vitamin C bottles, get 1 free</li><li>Free BP checkup on orders above Rs 1000</li></ul></div></div>
-
-<div id="blog" class="page"><h2>Health Tips</h2><div class="card"><ul><li>Stay hydrated by drinking at least 8 glasses of water daily.</li><li>Take medicines as prescribed, do not skip doses.</li><li>Maintain a balanced diet for better immunity.</li><li>Check expiry dates before consumption.</li><li>Wash hands regularly to prevent infection.</li></ul></div></div>
-
-<div id="about" class="page"><h2>About Us</h2><div class="card">Shayan Pharmacy has been serving Karachi since 2005. Certified pharmacists provide guidance and genuine medicines. Our goal is customer health and satisfaction.</div></div>
-
-<div id="contact" class="page"><h2>Contact</h2><div class="card"><p><b>Address:</b> Karachi, Pakistan</p><p><b>Phone:</b> 0321-XXXXXXX</p><p><b>Email:</b> info@shayanpharmacy.com</p><p><b>WhatsApp:</b> 0321-XXXXXXX</p></div></div>
-
-<div id="faq" class="page"><h2>FAQ</h2><div class="card"><ul><li><b>Q:</b> Do you provide home delivery?<br><b>A:</b> Yes, within Karachi.</li><li><b>Q:</b> Are medicines genuine?<br><b>A:</b> Yes, all are certified and sourced reliably.</li><li><b>Q:</b> Can I consult online?<br><b>A:</b> Yes, Doctor Consultation page allows online guidance.</li></ul></div></div>
-
-<div id="delivery" class="page"><h2>Delivery Info</h2><div class="card">Quick and reliable delivery across Karachi. Standard 24-48 hrs. Urgent delivery available on request. Track orders in real-time.</div></div>
-
-<div id="doctor" class="page"><h2>Doctor Consultation</h2><div class="card">Certified pharmacists and doctors provide consultation for prescriptions, dosages, and minor ailments. Book online or contact via WhatsApp/Phone.</div></div>
-
-<div id="profile" class="page"><h2>Profile</h2><div class="card">Manage your account, view order history, and update personal details here.</div></div>
-
-<div id="membership" class="page"><h2>Membership</h2><div class="card">Join our membership program to enjoy exclusive discounts, early access to offers, and personalized health tips.</div></div>
-
-<div id="newsletter" class="page"><h2>Newsletter</h2><div class="card">Subscribe to our newsletter for latest health tips, medicine updates, and exclusive offers.</div></div>
-
-<div id="events" class="page"><h2>Events Calendar</h2><div class="card">Keep track of upcoming health camps, free checkups, and community wellness events.</div></div>
-
-<div id="notifications" class="page"><h2>User Notifications</h2><div class="card">Receive alerts for new offers, prescription reminders, and important announcements.</div></div>
-
+  <!-- Your main content here -->
 </div>
 
 <script>
-// Login
-function login(){
-  let user=document.getElementById('username').value;
-  let pass=document.getElementById('password').value;
-  if(user==='shayan' && pass==='123'){
-    document.getElementById('loginPage').style.display='none';
-    document.getElementById('sidebar').style.display='block';
-    document.getElementById('mainContent').style.display='block';
-    showPage('dashboard');
-    loadMedicines(document.getElementById('medicineList'));
-    loadMedicines(document.getElementById('adminMedList'),true);
-    loadCategoryFilter();
-  }else{alert("Wrong Username or Password");}
+// Show SignUp page
+function showSignUp() {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('signUpPage').style.display = 'block';
 }
-// Page nav
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(id).style.display='block';}
 
-// Medicines
-var medicines=[
-{name:"Paracetamol",price:50,image:"https://images.unsplash.com/photo-1604014232412-9d153f9fc2e1?auto=format&w=500",category:"Tablets"},
-{name:"Ibuprofen",price:80,image:"https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&w=500",category:"Tablets"},
-{name:"Amoxicillin",price:120,image:"https://images.unsplash.com/photo-1600479831464-9ed1dc7b73d5?auto=format&w=500",category:"Tablets"},
-{name:"Vitamin C",price:60,image:"https://images.unsplash.com/photo-1590080878559-0f57eac3f90f?auto=format&w=500",category:"Vitamins"},
-{name:"Cough Syrup",price:90,image:"https://images.unsplash.com/photo-1599288892404-03cf17cbcb3a?auto=format&w=500",category:"Syrups"}
-];
-function loadCategoryFilter(){
-  let filter=document.getElementById('filterCategory');
-  let cats=[...new Set(medicines.map(m=>m.category))];
-  cats.forEach(c=>{if(!Array.from(filter.options).some(o=>o.value===c))filter.add(new Option(c,c))});
+// Show Login page
+function showLogin() {
+  document.getElementById('signUpPage').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'block';
 }
-function loadMedicines(listElement, admin=false){
-  listElement.innerHTML="";
-  medicines.forEach((m,i)=>{
-    if(!admin){
-      let div=document.createElement("div"); div.className="card";
-      div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br>Category: ${m.category}<br><button onclick="addToCart(${i})">Add to Cart</button>`;
-      listElement.appendChild(div);
-    }else{
-      let tr=document.createElement("tr");
-      tr.innerHTML=`<td><input value="${m.name}" onchange="editMedicine(${i},'name',this.value)"></td>
-      <td><input type="number" value="${m.price}" onchange="editMedicine(${i},'price',this.value)"></td>
-      <td><input value="${m.image}" onchange="editMedicine(${i},'image',this.value)"></td>
-      <td><select onchange="editMedicine(${i},'category',this.value)">
-        <option ${m.category==='Tablets'?'selected':''}>Tablets</option>
-        <option ${m.category==='Syrups'?'selected':''}>Syrups</option>
-        <option ${m.category==='Vitamins'?'selected':''}>Vitamins</option>
-        <option ${m.category==='Others'?'selected':''}>Others</option>
-        <option ${m.category==='BabyCare'?'selected':''}>BabyCare</option>
-        <option ${m.category==='SkinCare'?'selected':''}>SkinCare</option>
-      </select></td>
-      <td><button onclick="deleteMedicine(${i})">Delete</button></td>`;
-      listElement.appendChild(tr);
-    }
-  });
+
+// Firebase Login Function
+function login() {
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Logged in successfully
+      const user = userCredential.user;
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('sidebar').style.display = 'block';
+      document.getElementById('mainContent').style.display = 'block';
+      showPage('dashboard');
+      console.log('User logged in: ', user);
+    })
+    .catch((error) => {
+      alert('Error: ' + error.message);
+    });
 }
-// Cart
-var cart=[];
-function addToCart(idx){cart.push(medicines[idx]); updateCart();}
-function updateCart(){let total=0; cart.forEach(c=>total+=c.price);document.getElementById("cartCount2").innerText=cart.length;document.getElementById("cartTotal").innerText=total;}
-// Orders
-var orders=[];
-function placeOrder(){ if(cart.length==0){alert("Cart empty"); return;} orders.push([...cart]); cart=[]; updateCart();}
-// Admin
-function addOrUpdateMedicine(){let name=document.getElementById("medName").value; let price=parseInt(document.getElementById("medPrice").value); let image=document.getElementById("medImageURL").value; let category=document.getElementById("medCategory").value; if(!name||!price||!image){alert("Enter all fields"); return;} medicines.push({name,price,image,category}); loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true); loadCategoryFilter(); alert("Medicine Added");}
-function editMedicine(idx,field,value){if(field==='price') value=parseInt(value); medicines[idx][field]=value; loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);}
-function deleteMedicine(idx){if(confirm("Delete this medicine?")){medicines.splice(idx,1);loadMedicines(document.getElementById('medicineList'));loadMedicines(document.getElementById('adminMedList'),true);}}
-function filterAndSort(){let cat=document.getElementById('filterCategory').value;let sort=document.getElementById('sortPrice').value;let searchVal=document.getElementById('search').value.toLowerCase();let list=document.getElementById('medicineList'); list.innerHTML="";let filtered=medicines.filter(m=> (cat==='All'||m.category===cat) && m.name.toLowerCase().includes(searchVal)); if(sort==='asc') filtered.sort((a,b)=>a.price-b.price); if(sort==='desc') filtered.sort((a,b)=>b.price-a.price); filtered.forEach((m,i)=>{let div=document.createElement("div"); div.className="card"; div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br>Category: ${m.category}<br><button onclick="addToCart(${medicines.indexOf(m)})">Add to Cart</button>`; list.appendChild(div);});
+
+// Firebase SignUp Function
+function signUp() {
+  const email = document.getElementById('signUp-email').value;
+  const password = document.getElementById('signUp-password').value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed up successfully
+      const user = userCredential.user;
+      alert('Sign-up successful!');
+      console.log('User signed up: ', user);
+      showLogin(); // Redirect to login page
+    })
+    .catch((error) => {
+      alert('Error: ' + error.message);
+    });
+}
+
+// Page navigation function (as per your existing code)
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
 }
 </script>
+
 </body>
 </html>
