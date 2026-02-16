@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shayan Pharmacy Store</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+            color: #333;
+        }
+        header {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Verdana', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            max-width: 100%;
+        }
+        .slider {
+            display: flex;
+            transition: transform 1s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            height: 300px;
+            background-color: #e1e1e1;
+            margin-right: 10px;
+        }
+        .slider img {
+            width: 100%;
+            height: 100%;
+        }
+        .section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .section .box {
+            width: 30%;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .box h3 {
+            text-align: center;
+            font-size: 24px;
+            color: #4CAF50;
+        }
+        .box input, .box select, .box textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        .box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Shayan Pharmacy Store
+</header>
+
+<div class="container">
+    <!-- Image Slider -->
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <img src="https://via.placeholder.com/1200x300" alt="Image 1">
+            </div>
+            <div class="slide">
+                <img src="https://via.placeholder.com/1200x300" alt="Image 2">
+            </div>
+            <div class="slide">
+                <img src="https://via.placeholder.com/1200x300" alt="Image 3">
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer and Invoice Section -->
+    <div class="section">
+        <!-- Customer Details -->
+        <div class="box">
+            <h3>Customer Details</h3>
+            <form>
+                <input type="text" placeholder="Name" required>
+                <input type="text" placeholder="Consumer Number" required>
+                <input type="text" placeholder="Address" required>
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Save Details</button>
+            </form>
+        </div>
+
+        <!-- Blood Donation Section -->
+        <div class="box">
+            <h3>Blood Donation</h3>
+            <form>
+                <input type="text" placeholder="Blood Type" required>
+                <textarea placeholder="Additional Info" rows="4"></textarea>
+                <button type="submit">Donate Blood</button>
+            </form>
+        </div>
+
+        <!-- Medicine Invoice -->
+        <div class="box">
+            <h3>Medicine Invoice</h3>
+            <form>
+                <input type="text" placeholder="Medicine Name" required>
+                <input type="number" placeholder="Quantity" required>
+                <input type="number" placeholder="Price" required>
+                <button type="submit">Generate Invoice</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 Shayan Pharmacy Store. All rights reserved.
+</footer>
+
+<script>
+    let index = 0;
+    const slides = document.querySelectorAll('.slide');
+    function showNextSlide() {
+        index = (index + 1) % slides.length;
+        document.querySelector('.slider').style.transform = `translateX(-${index * 100}%)`;
+    }
+    setInterval(showNextSlide, 3000);  // Change slide every 3 seconds
+</script>
+
+</body>
+</html>
