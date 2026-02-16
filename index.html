@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shayan Pharmacy – Professional</title>
+<title>Shayan Pharmacy – Full Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
 <style>
 body{margin:0;font-family:'Poppins',sans-serif;background: linear-gradient(120deg,#f9fbe7,#e0f7fa);color:#333;}
@@ -53,6 +53,11 @@ th{border-radius:8px;}
 <a onclick="showPage('faq')">FAQ</a>
 <a onclick="showPage('delivery')">Delivery Info</a>
 <a onclick="showPage('doctor')">Doctor Consultation</a>
+<a onclick="showPage('profile')">Profile</a>
+<a onclick="showPage('membership')">Membership</a>
+<a onclick="showPage('newsletter')">Newsletter</a>
+<a onclick="showPage('events')">Events Calendar</a>
+<a onclick="showPage('notifications')">User Notifications</a>
 </div>
 
 <div class="main" id="mainContent" style="display:none;">
@@ -60,7 +65,7 @@ th{border-radius:8px;}
 <!-- Dashboard -->
 <div id="dashboard" class="page">
 <h2>Dashboard</h2>
-<div class="card">Welcome to Shayan Pharmacy Admin Panel. Monitor medicines, orders, offers, and manage content from here.</div>
+<div class="card">Welcome to Shayan Pharmacy Admin Panel. Track medicines, orders, offers, health tips, and user interactions from here.</div>
 </div>
 
 <!-- Medicines -->
@@ -99,57 +104,37 @@ th{border-radius:8px;}
 <button onclick="addOrUpdateMedicine()">Add / Update</button>
 </div>
 
-<!-- Realistic Content Pages -->
-<div id="orders" class="page"><h2>Orders</h2>
-<div class="card">All customer orders will appear here. Track order status, delivery, and payment details in real-time.</div></div>
+<!-- Realistic Pages -->
+<div id="orders" class="page"><h2>Orders</h2><div class="card">Track all customer orders here. View status, delivery details, and payment information for each order.</div></div>
 
-<div id="offers" class="page"><h2>Offers</h2>
-<div class="card"><b>Current Offers:</b><ul>
-<li>20% off on all cough syrups</li>
-<li>Buy 2 Vitamin C bottles, get 1 free</li>
-<li>Free blood pressure checkup with medicine purchase above Rs 1000</li>
-<li>Seasonal allergy special discounts on antihistamines</li>
-</ul></div></div>
+<div id="offers" class="page"><h2>Offers</h2><div class="card"><ul><li>20% off on cough syrups</li><li>Buy 2 Vitamin C bottles, get 1 free</li><li>Free BP checkup on orders above Rs 1000</li></ul></div></div>
 
-<div id="blog" class="page"><h2>Health Tips</h2>
-<div class="card"><ul>
-<li>Drink plenty of water to stay hydrated.</li>
-<li>Take medicines as prescribed, do not skip doses.</li>
-<li>Maintain a balanced diet rich in vitamins and minerals.</li>
-<li>Check expiry dates of medicines before use.</li>
-<li>Wash hands regularly to prevent infections.</li>
-<li>Keep a medicine reminder for daily doses.</li>
-</ul></div></div>
+<div id="blog" class="page"><h2>Health Tips</h2><div class="card"><ul><li>Stay hydrated by drinking at least 8 glasses of water daily.</li><li>Take medicines as prescribed, do not skip doses.</li><li>Maintain a balanced diet for better immunity.</li><li>Check expiry dates before consumption.</li><li>Wash hands regularly to prevent infection.</li></ul></div></div>
 
-<div id="about" class="page"><h2>About Us</h2>
-<div class="card">Shayan Pharmacy has been serving the community since 2005. Our mission is to provide genuine medicines, health guidance, and trusted service to our customers. Our pharmacists are certified and available for consultations.</div></div>
+<div id="about" class="page"><h2>About Us</h2><div class="card">Shayan Pharmacy has been serving Karachi since 2005. Certified pharmacists provide guidance and genuine medicines. Our goal is customer health and satisfaction.</div></div>
 
-<div id="contact" class="page"><h2>Contact</h2>
-<div class="card">
-<p><b>Address:</b> Karachi, Pakistan</p>
-<p><b>Phone:</b> 0321-XXXXXXX</p>
-<p><b>Email:</b> info@shayanpharmacy.com</p>
-<p><b>WhatsApp Orders:</b> 0321-XXXXXXX</p>
-</div></div>
+<div id="contact" class="page"><h2>Contact</h2><div class="card"><p><b>Address:</b> Karachi, Pakistan</p><p><b>Phone:</b> 0321-XXXXXXX</p><p><b>Email:</b> info@shayanpharmacy.com</p><p><b>WhatsApp:</b> 0321-XXXXXXX</p></div></div>
 
-<div id="faq" class="page"><h2>FAQ</h2>
-<div class="card"><ul>
-<li><b>Q:</b> Do you deliver medicines at home? <br><b>A:</b> Yes, we offer home delivery within Karachi.</li>
-<li><b>Q:</b> Can I consult a pharmacist online? <br><b>A:</b> Yes, Doctor Consultation page allows online guidance.</li>
-<li><b>Q:</b> Are all medicines genuine? <br><b>A:</b> Absolutely, all our medicines are sourced from certified suppliers.</li>
-<li><b>Q:</b> Do you provide prescription reminders? <br><b>A:</b> Yes, our Medicine Reminders page helps you stay on track.</li>
-</ul></div></div>
+<div id="faq" class="page"><h2>FAQ</h2><div class="card"><ul><li><b>Q:</b> Do you provide home delivery?<br><b>A:</b> Yes, within Karachi.</li><li><b>Q:</b> Are medicines genuine?<br><b>A:</b> Yes, all are certified and sourced reliably.</li><li><b>Q:</b> Can I consult online?<br><b>A:</b> Yes, Doctor Consultation page allows online guidance.</li></ul></div></div>
 
-<div id="delivery" class="page"><h2>Delivery Info</h2>
-<div class="card">We provide quick and reliable delivery across Karachi. Standard delivery takes 24-48 hours. Special delivery for urgent prescriptions can be arranged on request. All orders are tracked in real-time.</div></div>
+<div id="delivery" class="page"><h2>Delivery Info</h2><div class="card">Quick and reliable delivery across Karachi. Standard 24-48 hrs. Urgent delivery available on request. Track orders in real-time.</div></div>
 
-<div id="doctor" class="page"><h2>Doctor Consultation</h2>
-<div class="card">Our certified pharmacists and doctors provide consultation for prescription guidance, dosage, and minor ailments. Book an appointment online or contact us via WhatsApp/Phone for instant consultation.</div></div>
+<div id="doctor" class="page"><h2>Doctor Consultation</h2><div class="card">Certified pharmacists and doctors provide consultation for prescriptions, dosages, and minor ailments. Book online or contact via WhatsApp/Phone.</div></div>
+
+<div id="profile" class="page"><h2>Profile</h2><div class="card">Manage your account, view order history, and update personal details here.</div></div>
+
+<div id="membership" class="page"><h2>Membership</h2><div class="card">Join our membership program to enjoy exclusive discounts, early access to offers, and personalized health tips.</div></div>
+
+<div id="newsletter" class="page"><h2>Newsletter</h2><div class="card">Subscribe to our newsletter for latest health tips, medicine updates, and exclusive offers.</div></div>
+
+<div id="events" class="page"><h2>Events Calendar</h2><div class="card">Keep track of upcoming health camps, free checkups, and community wellness events.</div></div>
+
+<div id="notifications" class="page"><h2>User Notifications</h2><div class="card">Receive alerts for new offers, prescription reminders, and important announcements.</div></div>
 
 </div>
 
 <script>
-// ----- Login -----
+// Login
 function login(){
   let user=document.getElementById('username').value;
   let pass=document.getElementById('password').value;
@@ -163,11 +148,10 @@ function login(){
     loadCategoryFilter();
   }else{alert("Wrong Username or Password");}
 }
+// Page nav
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(id).style.display='block';}
 
-// ----- Page Navigation -----
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.style.display='none'); document.getElementById(id).style.display='block';}
-
-// ----- Medicines -----
+// Medicines
 var medicines=[
 {name:"Paracetamol",price:50,image:"https://images.unsplash.com/photo-1604014232412-9d153f9fc2e1?auto=format&w=500",category:"Tablets"},
 {name:"Ibuprofen",price:80,image:"https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&w=500",category:"Tablets"},
@@ -175,13 +159,11 @@ var medicines=[
 {name:"Vitamin C",price:60,image:"https://images.unsplash.com/photo-1590080878559-0f57eac3f90f?auto=format&w=500",category:"Vitamins"},
 {name:"Cough Syrup",price:90,image:"https://images.unsplash.com/photo-1599288892404-03cf17cbcb3a?auto=format&w=500",category:"Syrups"}
 ];
-
 function loadCategoryFilter(){
   let filter=document.getElementById('filterCategory');
   let cats=[...new Set(medicines.map(m=>m.category))];
   cats.forEach(c=>{if(!Array.from(filter.options).some(o=>o.value===c))filter.add(new Option(c,c))});
 }
-
 function loadMedicines(listElement, admin=false){
   listElement.innerHTML="";
   medicines.forEach((m,i)=>{
@@ -207,54 +189,18 @@ function loadMedicines(listElement, admin=false){
     }
   });
 }
-
-// ----- Cart -----
+// Cart
 var cart=[];
 function addToCart(idx){cart.push(medicines[idx]); updateCart();}
-function updateCart(){
-  let total=0; cart.forEach(c=>total+=c.price);
-  document.getElementById("cartCount2").innerText=cart.length;
-  document.getElementById("cartTotal").innerText=total;
-}
-
-// ----- Orders -----
+function updateCart(){let total=0; cart.forEach(c=>total+=c.price);document.getElementById("cartCount2").innerText=cart.length;document.getElementById("cartTotal").innerText=total;}
+// Orders
 var orders=[];
-function placeOrder(){ if(cart.length==0){alert("Cart empty"); return;}
-orders.push([...cart]); cart=[]; updateCart();}
-
-// ----- Admin -----
-function addOrUpdateMedicine(){
-  let name=document.getElementById("medName").value;
-  let price=parseInt(document.getElementById("medPrice").value);
-  let image=document.getElementById("medImageURL").value;
-  let category=document.getElementById("medCategory").value;
-  if(!name||!price||!image){alert("Enter all fields"); return;}
-  medicines.push({name,price,image,category});
-  loadMedicines(document.getElementById('medicineList'));
-  loadMedicines(document.getElementById('adminMedList'),true);
-  loadCategoryFilter();
-  alert("Medicine Added");
-}
-function editMedicine(idx,field,value){
-  if(field==='price') value=parseInt(value);
-  medicines[idx][field]=value;
-  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
-}
+function placeOrder(){ if(cart.length==0){alert("Cart empty"); return;} orders.push([...cart]); cart=[]; updateCart();}
+// Admin
+function addOrUpdateMedicine(){let name=document.getElementById("medName").value; let price=parseInt(document.getElementById("medPrice").value); let image=document.getElementById("medImageURL").value; let category=document.getElementById("medCategory").value; if(!name||!price||!image){alert("Enter all fields"); return;} medicines.push({name,price,image,category}); loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true); loadCategoryFilter(); alert("Medicine Added");}
+function editMedicine(idx,field,value){if(field==='price') value=parseInt(value); medicines[idx][field]=value; loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);}
 function deleteMedicine(idx){if(confirm("Delete this medicine?")){medicines.splice(idx,1);loadMedicines(document.getElementById('medicineList'));loadMedicines(document.getElementById('adminMedList'),true);}}
-
-function filterAndSort(){
-  let cat=document.getElementById('filterCategory').value;
-  let sort=document.getElementById('sortPrice').value;
-  let searchVal=document.getElementById('search').value.toLowerCase();
-  let list=document.getElementById('medicineList'); list.innerHTML="";
-  let filtered=medicines.filter(m=> (cat==='All'||m.category===cat) && m.name.toLowerCase().includes(searchVal));
-  if(sort==='asc') filtered.sort((a,b)=>a.price-b.price);
-  if(sort==='desc') filtered.sort((a,b)=>b.price-a.price);
-  filtered.forEach((m,i)=>{
-    let div=document.createElement("div"); div.className="card";
-    div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br>Category: ${m.category}<br><button onclick="addToCart(${medicines.indexOf(m)})">Add to Cart</button>`;
-    list.appendChild(div);
-  });
+function filterAndSort(){let cat=document.getElementById('filterCategory').value;let sort=document.getElementById('sortPrice').value;let searchVal=document.getElementById('search').value.toLowerCase();let list=document.getElementById('medicineList'); list.innerHTML="";let filtered=medicines.filter(m=> (cat==='All'||m.category===cat) && m.name.toLowerCase().includes(searchVal)); if(sort==='asc') filtered.sort((a,b)=>a.price-b.price); if(sort==='desc') filtered.sort((a,b)=>b.price-a.price); filtered.forEach((m,i)=>{let div=document.createElement("div"); div.className="card"; div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br>Category: ${m.category}<br><button onclick="addToCart(${medicines.indexOf(m)})">Add to Cart</button>`; list.appendChild(div);});
 }
 </script>
 </body>
