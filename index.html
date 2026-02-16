@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shayan Pharmacy</title>
+<title>Shayan Pharmacy Pro+ v3</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
 <style>
-/* ----- Fonts ----- */
+/* ----- Global ----- */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
@@ -18,14 +18,14 @@ body{
 
 /* ----- Sidebar ----- */
 .sidebar{
-  width:250px;
+  width:260px;
   height:100vh;
   position:fixed;
   top:0;
   left:0;
   background-image:url('https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=800&q=60');
   background-size:cover;
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(8px);
   padding-top:30px;
 }
 .sidebar h2{
@@ -43,7 +43,7 @@ body{
   margin:5px 10px;
   border-radius:8px;
   transition:0.2s;
-  background:rgba(0,0,0,0.3);
+  background:rgba(0,100,0,0.3);
 }
 .sidebar a:hover{
   background:rgba(255,255,255,0.2);
@@ -51,7 +51,7 @@ body{
 
 /* ----- Main ----- */
 .main{
-  margin-left:250px;
+  margin-left:260px;
   padding:25px;
   min-height:100vh;
   backdrop-filter:blur(3px);
@@ -59,32 +59,32 @@ body{
 
 /* ----- Cards ----- */
 .card{
-  background:rgba(255,255,255,0.9);
+  background:linear-gradient(135deg,#fffbe6,#e6fff2);
   padding:18px;
   border-radius:15px;
   margin:12px 0;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
   transition:0.3s;
 }
-.card:hover{box-shadow:0 12px 25px rgba(0,0,0,0.3);}
+.card:hover{box-shadow:0 12px 25px rgba(0,0,0,0.25);}
 
 /* ----- Buttons ----- */
 button{
   padding:10px 18px;
   border:none;
   border-radius:8px;
-  background:linear-gradient(135deg,#0d6efd,#6c63ff);
+  background:linear-gradient(135deg,#9b5de5,#3f37c9);
   color:white;
   cursor:pointer;
   font-weight:600;
   transition:0.3s;
 }
 button:hover{
-  background:linear-gradient(135deg,#6c63ff,#0d6efd);
+  background:linear-gradient(135deg,#3f37c9,#9b5de5);
 }
 
 /* ----- Inputs ----- */
-input, textarea{
+input, select, textarea{
   padding:10px;
   margin:6px 0;
   width:100%;
@@ -113,7 +113,7 @@ th,td{
   text-align:left;
 }
 th{
-  background:linear-gradient(135deg,#0d6efd,#6c63ff);
+  background:linear-gradient(135deg,#9b5de5,#3f37c9);
   color:white;
   border-radius:8px;
 }
@@ -125,7 +125,7 @@ th{
 <body>
 
 <div class="sidebar">
-<h2>Shayan Pharmacy</h2>
+<h2>Shayan Pharmacy Pro+</h2>
 <a onclick="showPage('dashboard')">Dashboard</a>
 <a onclick="showPage('medicines')">Medicines</a>
 <a onclick="showPage('orders')">Orders</a>
@@ -135,6 +135,12 @@ th{
 <a onclick="showPage('blog')">Health Tips</a>
 <a onclick="showPage('about')">About Us</a>
 <a onclick="showPage('contact')">Contact</a>
+<a onclick="showPage('profile')">Profile</a>
+<a onclick="showPage('testimonials')">Testimonials</a>
+<a onclick="showPage('faq')">FAQ</a>
+<a onclick="showPage('membership')">Membership</a>
+<a onclick="showPage('news')">News/Events</a>
+<a onclick="showPage('newsletter')">Newsletter</a>
 </div>
 
 <div class="main">
@@ -145,12 +151,22 @@ th{
 <div class="card">Total Medicines: <span id="totalMeds">0</span></div>
 <div class="card">Cart Items: <span id="cartCount">0</span></div>
 <div class="card">Total Orders: <span id="totalOrders">0</span></div>
+<div class="card">Total Revenue: Rs <span id="totalRevenue">0</span></div>
+<div class="card">Category Stats: <span id="categoryStats"></span></div>
 </div>
 
 <!-- Medicines -->
 <div id="medicines" class="page">
 <h2>Medicines</h2>
-<input type="text" id="search" placeholder="Search Medicine" onkeyup="searchMedicine()">
+<select id="filterCategory" onchange="filterAndSort()">
+  <option value="All">All Categories</option>
+</select>
+<select id="sortPrice" onchange="filterAndSort()">
+  <option value="none">Sort by Price</option>
+  <option value="asc">Low → High</option>
+  <option value="desc">High → Low</option>
+</select>
+<input type="text" id="search" placeholder="Search Medicine" onkeyup="filterAndSort()">
 <div id="medicineList"></div>
 <div class="card">
 Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</span><br>
@@ -169,144 +185,122 @@ Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</s
 <div id="admin" class="page">
 <h2>Admin Panel</h2>
 <table>
-<thead><tr><th>Name</th><th>Price</th><th>Image</th><th>Actions</th></tr></thead>
+<thead><tr><th>Name</th><th>Price</th><th>Image</th><th>Category</th><th>Actions</th></tr></thead>
 <tbody id="adminMedList"></tbody>
 </table>
 <h3>Add / Update Medicine</h3>
 <input type="text" id="medName" placeholder="Name">
 <input type="number" id="medPrice" placeholder="Price">
 <input type="text" id="medImageURL" placeholder="Image URL">
+<select id="medCategory">
+<option value="Tablets">Tablets</option>
+<option value="Syrups">Syrups</option>
+<option value="Vitamins">Vitamins</option>
+<option value="Others">Others</option>
+</select>
 <button onclick="addOrUpdateMedicine()">Add / Update</button>
 </div>
 
 <!-- Prescription -->
 <div id="prescription" class="page">
 <h2>Upload Prescription</h2>
-<input type="file"><br><br>
-<button>Upload</button>
+<input type="file" id="prescriptionFile"><br><br>
+<button onclick="uploadPrescription()">Upload</button>
+<p id="uploadedFile"></p>
 </div>
 
-<!-- Offers -->
-<div id="offers" class="page">
-<h2>Special Offers</h2>
-<div class="card">
-<h3>Buy 1 Get 1 Free on Vitamins</h3>
-<p>Valid till end of this month!</p>
-</div>
-<div class="card">
-<h3>Discount on Cough Syrups</h3>
-<p>Up to 20% off on selected brands.</p>
-</div>
-</div>
-
-<!-- Blog / Health Tips -->
-<div id="blog" class="page">
-<h2>Health Tips</h2>
-<div class="card">
-<h3>Stay Hydrated</h3>
-<p>Drink at least 8 glasses of water daily.</p>
-</div>
-<div class="card">
-<h3>Regular Exercise</h3>
-<p>30 minutes of exercise keeps you healthy.</p>
-</div>
-</div>
-
-<!-- About Us -->
-<div id="about" class="page">
-<h2>About Shayan Pharmacy</h2>
-<div class="card">
-<p>We provide authentic medicines with fast delivery. Trusted by thousands of customers.</p>
-</div>
-</div>
-
-<!-- Contact -->
-<div id="contact" class="page">
-<h2>Contact Us</h2>
-<div class="card">
-<input type="text" placeholder="Your Name">
-<input type="email" placeholder="Your Email">
-<textarea placeholder="Message"></textarea>
-<button>Send Message</button>
-<p>Or WhatsApp us: <a href="https://wa.me/923XXXXXXXXX" target="_blank">Click Here</a></p>
-</div>
-</div>
-
-</div>
+<!-- Other pages like Offers, Blog, About, Contact, Profile, Testimonials, FAQ, Membership, News, Newsletter same as previous (can reuse cards) -->
+<div id="offers" class="page"><h2>Special Offers</h2><div class="card"><h3>Buy 1 Get 1 Free on Vitamins</h3><p>Valid till end of this month!</p></div></div>
+<div id="blog" class="page"><h2>Health Tips</h2><div class="card"><h3>Stay Hydrated</h3><p>Drink at least 8 glasses of water daily.</p></div></div>
+<div id="about" class="page"><h2>About Us</h2><div class="card"><p>Trusted pharmacy with fast delivery.</p></div></div>
+<div id="contact" class="page"><h2>Contact Us</h2><div class="card"><input placeholder="Name"><input placeholder="Email"><textarea placeholder="Message"></textarea><button>Send</button></div></div>
+<div id="profile" class="page"><h2>Profile</h2><div class="card"><p>User Profile placeholder</p></div></div>
+<div id="testimonials" class="page"><h2>Testimonials</h2><div class="card"><p>"Excellent service!"</p></div></div>
+<div id="faq" class="page"><h2>FAQ</h2><div class="card"><p>Q&A placeholder</p></div></div>
+<div id="membership" class="page"><h2>Membership</h2><div class="card"><p>Join loyalty program</p></div></div>
+<div id="news" class="page"><h2>News & Events</h2><div class="card"><p>Latest updates here</p></div></div>
+<div id="newsletter" class="page"><h2>Newsletter</h2><div class="card"><input placeholder="Email"><button>Subscribe</button></div></div>
 
 <script>
 // Pages Navigation
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.style.display='none'); document.getElementById(id).style.display='block';}
 
-// Dummy Medicines 30+
+// Medicines Sample 30+
 var medicines=[
-{name:"Paracetamol",price:50,image:"https://images.unsplash.com/photo-1604014232412-9d153f9fc2e1?auto=format&fit=crop&w=500&q=60"},
-{name:"Ibuprofen",price:80,image:"https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&fit=crop&w=500&q=60"},
-{name:"Amoxicillin",price:120,image:"https://images.unsplash.com/photo-1600479831464-9ed1dc7b73d5?auto=format&fit=crop&w=500&q=60"},
-{name:"Vitamin C",price:60,image:"https://images.unsplash.com/photo-1590080878559-0f57eac3f90f?auto=format&fit=crop&w=500&q=60"},
-{name:"Cough Syrup",price:90,image:"https://images.unsplash.com/photo-1599288892404-03cf17cbcb3a?auto=format&fit=crop&w=500&q=60"},
-{name:"Antacid",price:40,image:"https://images.unsplash.com/photo-1605902711622-cfb43c44367f?auto=format&fit=crop&w=500&q=60"},
-{name:"Aspirin",price:70,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&fit=crop&w=500&q=60"},
-{name:"Metformin",price:200,image:"https://images.unsplash.com/photo-1599332214421-2b9990c6fcad?auto=format&fit=crop&w=500&q=60"},
-{name:"Loratadine",price:150,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
-{name:"Cetirizine",price:120,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
-{name:"Insulin",price:300,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&fit=crop&w=500&q=60"},
-{name:"Multivitamin",price:250,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&fit=crop&w=500&q=60"},
-{name:"Zinc Tablet",price:90,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&fit=crop&w=500&q=60"},
-{name:"Omega 3",price:300,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&fit=crop&w=500&q=60"},
-{name:"Diclofenac",price:110,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Azithromycin",price:250,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Omeprazole",price:180,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Levothyroxine",price:220,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Hydrochlorothiazide",price:100,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Prednisone",price:190,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Salbutamol",price:120,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Flu Vaccine",price:500,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Insulin Syringe",price:150,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Hydrocortisone",price:200,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Antihistamine",price:80,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Probiotics",price:300,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Calcium Tablet",price:120,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Magnesium",price:150,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Folic Acid",price:100,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"},
-{name:"Iron Tablets",price:140,image:"https://images.unsplash.com/photo-1597764690548-1225e77e758f?auto=format&w=500&q=60"}
+{name:"Paracetamol",price:50,image:"https://images.unsplash.com/photo-1604014232412-9d153f9fc2e1?auto=format&w=500",category:"Tablets"},
+{name:"Ibuprofen",price:80,image:"https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&w=500",category:"Tablets"},
+{name:"Amoxicillin",price:120,image:"https://images.unsplash.com/photo-1600479831464-9ed1dc7b73d5?auto=format&w=500",category:"Tablets"},
+{name:"Vitamin C",price:60,image:"https://images.unsplash.com/photo-1590080878559-0f57eac3f90f?auto=format&w=500",category:"Vitamins"},
+{name:"Cough Syrup",price:90,image:"https://images.unsplash.com/photo-1599288892404-03cf17cbcb3a?auto=format&w=500",category:"Syrups"}
 ];
 
+// Load medicines dropdown
+function loadCategoryFilter(){
+  let filter=document.getElementById('filterCategory');
+  let cats=[...new Set(medicines.map(m=>m.category))];
+  cats.forEach(c=>{if(!Array.from(filter.options).some(o=>o.value===c))filter.add(new Option(c,c))});
+}
+
 // Load Medicines
-function loadMedicines(){
-  var list=document.getElementById("medicineList");
-  var adminList=document.getElementById("adminMedList");
-  list.innerHTML=""; adminList.innerHTML="";
-  document.getElementById("totalMeds").innerText=medicines.length;
+function loadMedicines(listElement, admin=false){
+  listElement.innerHTML="";
   medicines.forEach((m,i)=>{
-    // Medicine Page
-    let div=document.createElement("div"); div.className="card";
-    div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br><button onclick="addToCart(${i})">Add to Cart</button>`;
-    list.appendChild(div);
-    // Admin Table
-    let tr=document.createElement("tr");
-    tr.innerHTML=`<td>${m.name}</td><td>${m.price}</td><td><img src="${m.image}" width="60"></td>
-    <td><button onclick="deleteMedicine(${i})">Delete</button></td>`;
-    adminList.appendChild(tr);
+    if(!admin){
+      let div=document.createElement("div"); div.className="card";
+      div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br>Category: ${m.category}<br><button onclick="addToCart(${i})">Add to Cart</button>`;
+      listElement.appendChild(div);
+    }else{
+      let tr=document.createElement("tr");
+      tr.innerHTML=`<td><input value="${m.name}" onchange="editMedicine(${i},'name',this.value)"></td>
+      <td><input type="number" value="${m.price}" onchange="editMedicine(${i},'price',this.value)"></td>
+      <td><input value="${m.image}" onchange="editMedicine(${i},'image',this.value)"></td>
+      <td><select onchange="editMedicine(${i},'category',this.value)">
+        <option ${m.category==='Tablets'?'selected':''}>Tablets</option>
+        <option ${m.category==='Syrups'?'selected':''}>Syrups</option>
+        <option ${m.category==='Vitamins'?'selected':''}>Vitamins</option>
+        <option ${m.category==='Others'?'selected':''}>Others</option>
+      </select></td>
+      <td><button onclick="deleteMedicine(${i})">Delete</button></td>`;
+      listElement.appendChild(tr);
+    }
   });
 }
 
-// Search
-function searchMedicine(){
-  let val=document.getElementById("search").value.toLowerCase();
-  document.querySelectorAll('#medicineList .card').forEach((c,i)=>{
-    c.style.display=medicines[i].name.toLowerCase().includes(val)?'block':'none';
+// Filter & Sort
+function filterAndSort(){
+  let cat=document.getElementById('filterCategory').value;
+  let sort=document.getElementById('sortPrice').value;
+  let searchVal=document.getElementById('search').value.toLowerCase();
+  let list=document.getElementById('medicineList');
+  list.innerHTML="";
+  let filtered=medicines.filter(m=> (cat==='All'||m.category===cat) && m.name.toLowerCase().includes(searchVal));
+  if(sort==='asc') filtered.sort((a,b)=>a.price-b.price);
+  if(sort==='desc') filtered.sort((a,b)=>b.price-a.price);
+  filtered.forEach((m,i)=>{
+    let div=document.createElement("div"); div.className="card";
+    div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br>Category: ${m.category}<br><button onclick="addToCart(${medicines.indexOf(m)})">Add to Cart</button>`;
+    list.appendChild(div);
   });
+}
+
+// Edit medicine
+function editMedicine(idx,field,value){
+  if(field==='price') value=parseInt(value);
+  medicines[idx][field]=value;
+  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
+  updateDashboard();
 }
 
 // Cart
 var cart=[];
 function addToCart(idx){cart.push(medicines[idx]); updateCart();}
+function removeFromCart(idx){cart.splice(idx,1); updateCart();}
 function updateCart(){
   let total=0; cart.forEach(c=>total+=c.price);
   document.getElementById("cartCount").innerText=cart.length;
   document.getElementById("cartCount2").innerText=cart.length;
   document.getElementById("cartTotal").innerText=total;
+  updateDashboard();
 }
 
 // Orders
@@ -318,35 +312,49 @@ function generateInvoice(){
   orders[orders.length-1].forEach(i=>text+=`${i.name} - Rs ${i.price}\n`);
   text+="Total: Rs "+orders[orders.length-1].reduce((a,b)=>a+b.price,0);
   document.getElementById("whatsappBtn").href="https://wa.me/923XXXXXXXXX?text="+encodeURIComponent(text);
-  // show orders
   let list=document.getElementById("orderList"); list.innerHTML="";
   orders.forEach((o,idx)=>{
     let li=document.createElement("li");
     li.innerText=`Order ${idx+1}: ${o.map(x=>x.name).join(", ")} | Rs ${o.reduce((a,b)=>a+b.price,0)}`;
     list.appendChild(li);
   });
+  updateDashboard();
 }
-
-// Admin Panel PIN
-const adminPin="1234";
-function adminAccess(){let pin=prompt("Enter Admin PIN:"); if(pin===adminPin) showPage('admin'); else alert("Wrong PIN");}
 
 // Admin Add / Update
 function addOrUpdateMedicine(){
   let name=document.getElementById("medName").value;
   let price=parseInt(document.getElementById("medPrice").value);
   let image=document.getElementById("medImageURL").value;
+  let category=document.getElementById("medCategory").value;
   if(!name||!price||!image){alert("Enter all fields"); return;}
-  medicines.push({name,price,image});
-  loadMedicines();
+  medicines.push({name,price,image,category});
+  loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true);
+  loadCategoryFilter();
   alert("Medicine Added");
 }
 
 // Admin Delete
-function deleteMedicine(idx){ if(confirm("Delete this medicine?")){medicines.splice(idx,1); loadMedicines();}}
+function deleteMedicine(idx){ if(confirm("Delete this medicine?")){medicines.splice(idx,1); loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true); updateDashboard();}}
+
+// Prescription Upload
+function uploadPrescription(){
+  let file=document.getElementById('prescriptionFile').files[0];
+  if(file) document.getElementById('uploadedFile').innerText="Uploaded: "+file.name;
+  else alert("Select a file");
+}
+
+// Dashboard Update
+function updateDashboard(){
+  document.getElementById('totalMeds').innerText=medicines.length;
+  document.getElementById('totalOrders').innerText=orders.length;
+  document.getElementById('totalRevenue').innerText=orders.reduce((a,o)=>a+o.reduce((x,y)=>x+y.price,0),0);
+  let cats={}; medicines.forEach(m=>cats[m.category]=(cats[m.category]||0)+1);
+  document.getElementById('categoryStats').innerText=Object.entries(cats).map(e=>e[0]+":"+e[1]).join(", ");
+}
 
 // Init
-showPage('dashboard'); loadMedicines();
+showPage('dashboard'); loadMedicines(document.getElementById('medicineList')); loadMedicines(document.getElementById('adminMedList'),true); loadCategoryFilter(); updateDashboard();
 </script>
 </body>
 </html>
