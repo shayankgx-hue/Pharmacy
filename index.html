@@ -1,165 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shayan Pharmacy Store</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f3f4f6;
-            color: #333;
-        }
-        header {
-            background: #4CAF50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 30px;
-            font-family: 'Verdana', sans-serif;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .slider-container {
-            position: relative;
-            overflow: hidden;
-            max-width: 100%;
-        }
-        .slider {
-            display: flex;
-            transition: transform 1s ease-in-out;
-        }
-        .slide {
-            min-width: 100%;
-            height: 300px;
-            background-color: #e1e1e1;
-            margin-right: 10px;
-        }
-        .slider img {
-            width: 100%;
-            height: 100%;
-        }
-        .section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-        }
-        .section .box {
-            width: 30%;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        .box h3 {
-            text-align: center;
-            font-size: 24px;
-            color: #4CAF50;
-        }
-        .box input, .box select, .box textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-        }
-        .box button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shayan Pharmacy Store</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<!-- Chart.js (For Sales Chart) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+    transition: 0.4s;
+}
+
+.dark {
+    background: #121212;
+    color: white;
+}
+
+header {
+    background: #0a9396;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #0a9396;
+    color: white;
+    margin: 5px 0;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.container {
+    padding: 20px;
+}
+
+.section {
+    background: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark .section {
+    background: #1e1e1e;
+}
+
+#adminPanel {
+    display: none;
+}
+
+/* Sales Chart */
+.chart-container {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+/* Mobile-Responsive */
+@media screen and (max-width: 768px) {
+    header {
+        font-size: 26px;
+    }
+
+    .section {
+        margin: 10px 0;
+    }
+
+    .chart-container {
+        width: 100%;
+    }
+}
+
+</style>
 </head>
+
 <body>
 
-<header>
-    Shayan Pharmacy Store
-</header>
+<header>Shayan Pharmacy Store</header>
+
+<button class="toggle" onclick="toggleDark()">🌙 Dark Mode</button>
 
 <div class="container">
-    <!-- Image Slider -->
-    <div class="slider-container">
-        <div class="slider">
-            <div class="slide">
-                <img src="https://via.placeholder.com/1200x300" alt="Image 1">
-            </div>
-            <div class="slide">
-                <img src="https://via.placeholder.com/1200x300" alt="Image 2">
-            </div>
-            <div class="slide">
-                <img src="https://via.placeholder.com/1200x300" alt="Image 3">
-            </div>
-        </div>
-    </div>
 
-    <!-- Customer and Invoice Section -->
-    <div class="section">
-        <!-- Customer Details -->
-        <div class="box">
-            <h3>Customer Details</h3>
-            <form>
-                <input type="text" placeholder="Name" required>
-                <input type="text" placeholder="Consumer Number" required>
-                <input type="text" placeholder="Address" required>
-                <input type="email" placeholder="Email Address" required>
-                <button type="submit">Save Details</button>
-            </form>
-        </div>
-
-        <!-- Blood Donation Section -->
-        <div class="box">
-            <h3>Blood Donation</h3>
-            <form>
-                <input type="text" placeholder="Blood Type" required>
-                <textarea placeholder="Additional Info" rows="4"></textarea>
-                <button type="submit">Donate Blood</button>
-            </form>
-        </div>
-
-        <!-- Medicine Invoice -->
-        <div class="box">
-            <h3>Medicine Invoice</h3>
-            <form>
-                <input type="text" placeholder="Medicine Name" required>
-                <input type="number" placeholder="Quantity" required>
-                <input type="number" placeholder="Price" required>
-                <button type="submit">Generate Invoice</button>
-            </form>
-        </div>
-    </div>
+<!-- CUSTOMER SAVE -->
+<div class="section">
+<h2>Customer Details</h2>
+<input type="text" id="cname" placeholder="Customer Name">
+<input type="text" id="cno" placeholder="Consumer Number">
+<input type="text" id="caddress" placeholder="Address">
+<button onclick="saveCustomer()">Save Customer</button>
 </div>
 
-<footer>
-    &copy; 2026 Shayan Pharmacy Store. All rights reserved.
-</footer>
+<!-- BLOOD DATABASE -->
+<div class="section">
+<h2>Blood Donation Database</h2>
+<input type="text" id="bname" placeholder="Donor Name">
+<select id="bgroup">
+    <option>A+</option>
+    <option>A-</option>
+    <option>B+</option>
+    <option>B-</option>
+    <option>O+</option>
+    <option>O-</option>
+    <option>AB+</option>
+    <option>AB-</option>
+</select>
+<button onclick="saveBlood()">Add Donor</button>
+</div>
+
+<!-- INVOICE -->
+<div class="section">
+<h2>Generate Invoice</h2>
+<input type="text" id="mname" placeholder="Medicine Name">
+<input type="number" id="price" placeholder="Price">
+<input type="number" id="qty" placeholder="Quantity">
+<button onclick="generateInvoice()">Generate & Save</button>
+<div id="invoiceResult"></div>
+<button onclick="printInvoice()">🖨 Print Invoice</button>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="section">
+<h2>Admin Login</h2>
+<input type="password" id="adminPass" placeholder="Enter Admin Password">
+<button onclick="adminLogin()">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="section" id="adminPanel">
+<h2>Admin Panel</h2>
+
+<h3>Customers</h3>
+<table id="customerTable"></table>
+
+<h3>Blood Donors</h3>
+<table id="bloodTable"></table>
+
+<h3>Invoices</h3>
+<table id="invoiceTable"></table>
+
+<h3>Sales Chart</h3>
+<div class="chart-container">
+    <canvas id="salesChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
 <script>
-    let index = 0;
-    const slides = document.querySelectorAll('.slide');
-    function showNextSlide() {
-        index = (index + 1) % slides.length;
-        document.querySelector('.slider').style.transform = `translateX(-${index * 100}%)`;
+// Firebase Configuration (You need to replace this with your own Firebase credentials)
+var firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+
+// Dark Mode Toggle
+function toggleDark() {
+    document.body.classList.toggle("dark");
+}
+
+// Save Customer Data
+function saveCustomer() {
+    let customers = JSON.parse(localStorage.getItem("customers")) || [];
+    customers.push({
+        name: cname.value,
+        no: cno.value,
+        address: caddress.value
+    });
+    localStorage.setItem("customers", JSON.stringify(customers));
+    alert("Customer Saved!");
+}
+
+// Save Blood Donor Data
+function saveBlood() {
+    let donors = JSON.parse(localStorage.getItem("donors")) || [];
+    donors.push({
+        name: bname.value,
+        group: bgroup.value
+    });
+    localStorage.setItem("donors", JSON.stringify(donors));
+    alert("Donor Added!");
+}
+
+// Generate Invoice and Save
+function generateInvoice() {
+    let total = price.value * qty.value;
+    let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+    invoices.push({
+        medicine: mname.value,
+        price: price.value,
+        qty: qty.value,
+        total: total
+    });
+    localStorage.setItem("invoices", JSON.stringify(invoices));
+
+    invoiceResult.innerHTML = `<h3>Total: Rs ${total}</h3>`;
+}
+
+// Print Invoice
+function printInvoice() {
+    window.print();
+}
+
+// Admin Login
+function adminLogin() {
+    if (adminPass.value === "1234") {
+        document.getElementById("adminPanel").style.display = "block";
+        loadData();
+        loadSalesChart();
+    } else {
+        alert("Wrong Password!");
     }
-    setInterval(showNextSlide, 3000);  // Change slide every 3 seconds
+}
+
+// Load Data in Admin Panel
+function loadData() {
+    let customers = JSON.parse(localStorage.getItem("customers")) || [];
+    let donors = JSON.parse(localStorage.getItem("donors")) || [];
+    let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+
+    customerTable.innerHTML = "<tr><th>Name</th><th>No</th><th>Address</th><th>Delete</th></tr>";
+    customers.forEach((c, i) => {
+        customerTable.innerHTML += `<tr>
+            <td>${c.name}</td>
+            <td>${c.no}</td>
+            <td>${c.address}</td>
+            <td><button onclick="deleteCustomer(${i})">Delete</button></td>
+        </tr>`;
+    });
+
+    bloodTable.innerHTML = "<tr><th>Name</th><th>Group</th><th>Delete</th></tr>";
+    donors.forEach((d, i) => {
+        bloodTable.innerHTML += `<tr>
+            <td>${d.name}</td>
+            <td>${d.group}</td>
+            <td><button onclick="deleteDonor(${i})">Delete</button></td>
+        </tr>`;
+    });
+
+    invoiceTable.innerHTML = "<tr><th>Medicine</th><th>Price</th><th>Qty</th><th>Total</th><th>Delete</th></tr>";
+    invoices.forEach((inv, i) => {
+        invoiceTable.innerHTML += `<tr>
+            <td>${inv.medicine}</td>
+            <td>${inv.price}</td>
+            <td>${inv.qty}</td>
+            <td>${inv.total}</td>
+            <td><button onclick="deleteInvoice(${i})">Delete</button></td>
+        </tr>`;
+    });
+}
+
+// Sales Chart using Chart.js
+function loadSalesChart() {
+    const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+    const salesData = invoices.map(inv => inv.total);
+
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: Array.from({ length: salesData.length }, (_, i) => `Invoice ${i+1}`),
+            datasets: [{
+                label: 'Sales (Rs)',
+                data: salesData,
+                borderColor: 'rgba(0, 123, 255, 1)',
+                fill: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Invoice Number'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Sales Amount'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Delete Functions
+function deleteCustomer(i) {
+    let customers = JSON.parse(localStorage.getItem("customers"));
+    customers.splice(i, 1);
+    localStorage.setItem("customers", JSON.stringify(customers));
+    loadData();
+}
+
+function deleteDonor(i) {
+    let donors = JSON.parse(localStorage.getItem("donors"));
+    donors.splice(i, 1);
+    localStorage.setItem("donors", JSON.stringify(donors));
+    loadData();
+}
+
+function deleteInvoice(i) {
+    let invoices = JSON.parse(localStorage.getItem("invoices"));
+    invoices.splice(i, 1);
+    localStorage.setItem("invoices", JSON.stringify(invoices));
+    loadData();
+}
+
+// Firebase Data Sync (Optional)
+// Use Firebase Firestore to sync data. For example:
+// db.collection("customers").add({
+//     name: "John Doe",
+//     address: "123 Main St"
+// });
+
 </script>
 
 </body>
