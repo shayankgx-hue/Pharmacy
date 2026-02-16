@@ -3,101 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shayan Pharmacy Pro – Professional</title>
+<title>Shayan Pharmacy – Professional</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background: linear-gradient(120deg, #f9fbe7, #e0f7fa);
-  color:#333;
-}
-.sidebar{
-  width:260px;
-  height:100vh;
-  position:fixed;
-  top:0;
-  left:0;
-  overflow-y:auto;
-  padding-top:30px;
-  background: linear-gradient(180deg, #c5e1a5, #aed581);
-  box-shadow: 3px 0 8px rgba(0,0,0,0.2);
-}
+body{margin:0;font-family:'Poppins',sans-serif;background: linear-gradient(120deg,#f9fbe7,#e0f7fa);color:#333;}
+.sidebar{width:260px;height:100vh;position:fixed;top:0;left:0;overflow-y:auto;padding-top:30px;background: linear-gradient(180deg,#c5e1a5,#aed581);box-shadow: 3px 0 8px rgba(0,0,0,0.2);}
 .sidebar::-webkit-scrollbar{width:8px;}
 .sidebar::-webkit-scrollbar-thumb{background: rgba(0,0,0,0.2); border-radius:4px;}
 .sidebar::-webkit-scrollbar-track{background: rgba(0,0,0,0.05);}
-.sidebar h2{
-  color:#1b5e20;
-  text-align:center;
-  margin-bottom:40px;
-  font-family:'Roboto Slab', serif;
-}
-.sidebar a{
-  display:block;
-  color:#1b5e20;
-  padding:14px 20px;
-  text-decoration:none;
-  font-weight:600;
-  margin:5px 10px;
-  border-radius:8px;
-  transition:0.3s;
-}
-.sidebar a:hover{
-  background:#aed581;
-  color:#fff;
-}
-.main{
-  margin-left:260px;
-  padding:25px;
-  min-height:100vh;
-}
-.card{
-  padding:18px;
-  border-radius:15px;
-  margin:12px 0;
-  background:#fffde7;
-  color:#333;
-  box-shadow:0 8px 20px rgba(0,0,0,0.1);
-  transition:0.3s;
-}
-button{
-  padding:10px 18px;
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-  background: linear-gradient(45deg, #aed581, #7cb342);
-  color:#fff;
-  transition:0.3s;
-}
+.sidebar h2{color:#1b5e20;text-align:center;margin-bottom:40px;font-family:'Roboto Slab', serif;}
+.sidebar a{display:block;color:#1b5e20;padding:14px 20px;text-decoration:none;font-weight:600;margin:5px 10px;border-radius:8px;transition:0.3s;}
+.sidebar a:hover{background:#aed581;color:#fff;}
+.main{margin-left:260px;padding:25px;min-height:100vh;}
+.card{padding:18px;border-radius:15px;margin:12px 0;background:#fffde7;color:#333;box-shadow:0 8px 20px rgba(0,0,0,0.1);transition:0.3s;}
+button{padding:10px 18px;border:none;border-radius:8px;font-weight:600;cursor:pointer;background: linear-gradient(45deg,#aed581,#7cb342);color:#fff;transition:0.3s;}
 button:hover{opacity:0.85;}
-input, select, textarea{
-  padding:10px;
-  margin:6px 0;
-  width:100%;
-  border-radius:8px;
-  border:1px solid #aaa;
-  background:#f1f8e9;
-  color:#333;
-  font-family:'Poppins',sans-serif;
-}
-img.medImg{
-  width:100%;
-  height:150px;
-  object-fit:cover;
-  border-radius:12px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
-}
-th,td{
-  padding:12px;
-  border-bottom:1px solid #ccc;
-  text-align:left;
-  color:#333;
-}
+input,select,textarea{padding:10px;margin:6px 0;width:100%;border-radius:8px;border:1px solid #aaa;background:#f1f8e9;color:#333;font-family:'Poppins',sans-serif;}
+img.medImg{width:100%;height:150px;object-fit:cover;border-radius:12px;}
+table{width:100%;border-collapse:collapse;margin-top:10px;}
+th,td{padding:12px;border-bottom:1px solid #ccc;text-align:left;color:#333;}
 th{border-radius:8px;}
 .page{display:none;}
 #loginPage{display:block;text-align:center;padding-top:100px;}
@@ -112,7 +36,6 @@ th{border-radius:8px;}
 <input type="text" id="username" placeholder="Username"><br>
 <input type="password" id="password" placeholder="Password"><br>
 <button onclick="login()">Login</button>
-<p style="margin-top:10px;">Username: <b>shayan</b> | Password: <b>123</b></p>
 </div>
 </div>
 
@@ -127,19 +50,9 @@ th{border-radius:8px;}
 <a onclick="showPage('blog')">Health Tips</a>
 <a onclick="showPage('about')">About Us</a>
 <a onclick="showPage('contact')">Contact</a>
-<a onclick="showPage('profile')">Profile</a>
-<a onclick="showPage('testimonials')">Testimonials</a>
 <a onclick="showPage('faq')">FAQ</a>
-<a onclick="showPage('membership')">Membership</a>
-<a onclick="showPage('news')">News/Events</a>
-<a onclick="showPage('newsletter')">Newsletter</a>
-<a onclick="showPage('doctor')">Doctor Consultation</a>
 <a onclick="showPage('delivery')">Delivery Info</a>
-<a onclick="showPage('reminders')">Medicine Reminders</a>
-<a onclick="showPage('calculator')">Health Calculator</a>
-<a onclick="showPage('special')">Special Categories</a>
-<a onclick="showPage('notifications')">User Notifications</a>
-<a onclick="showPage('events')">Events Calendar</a>
+<a onclick="showPage('doctor')">Doctor Consultation</a>
 </div>
 
 <div class="main" id="mainContent" style="display:none;">
@@ -147,26 +60,21 @@ th{border-radius:8px;}
 <!-- Dashboard -->
 <div id="dashboard" class="page">
 <h2>Dashboard</h2>
-<div class="card">Welcome to Shayan Pharmacy Admin Panel. All metrics and orders will appear here.</div>
+<div class="card">Welcome to Shayan Pharmacy Admin Panel. Monitor medicines, orders, offers, and manage content from here.</div>
 </div>
 
 <!-- Medicines -->
 <div id="medicines" class="page">
 <h2>Medicines</h2>
-<select id="filterCategory" onchange="filterAndSort()">
-  <option value="All">All Categories</option>
-</select>
+<select id="filterCategory" onchange="filterAndSort()"><option value="All">All Categories</option></select>
 <select id="sortPrice" onchange="filterAndSort()">
-  <option value="none">Sort by Price</option>
-  <option value="asc">Low → High</option>
-  <option value="desc">High → Low</option>
+<option value="none">Sort by Price</option>
+<option value="asc">Low → High</option>
+<option value="desc">High → Low</option>
 </select>
 <input type="text" id="search" placeholder="Search Medicine" onkeyup="filterAndSort()">
 <div id="medicineList"></div>
-<div class="card">
-Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</span><br>
-<button onclick="placeOrder()">Place Order</button>
-</div>
+<div class="card">Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</span><br><button onclick="placeOrder()">Place Order</button></div>
 </div>
 
 <!-- Admin Panel -->
@@ -191,25 +99,54 @@ Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</s
 <button onclick="addOrUpdateMedicine()">Add / Update</button>
 </div>
 
-<!-- Placeholder Pages -->
-<div id="orders" class="page"><h2>Orders</h2><div class="card">Content will be updated soon.</div></div>
-<div id="offers" class="page"><h2>Offers</h2><div class="card">Content will be updated soon.</div></div>
-<div id="blog" class="page"><h2>Health Tips</h2><div class="card">Content will be updated soon.</div></div>
-<div id="about" class="page"><h2>About Us</h2><div class="card">Content will be updated soon.</div></div>
-<div id="contact" class="page"><h2>Contact</h2><div class="card">Content will be updated soon.</div></div>
-<div id="profile" class="page"><h2>Profile</h2><div class="card">Content will be updated soon.</div></div>
-<div id="testimonials" class="page"><h2>Testimonials</h2><div class="card">Content will be updated soon.</div></div>
-<div id="faq" class="page"><h2>FAQ</h2><div class="card">Content will be updated soon.</div></div>
-<div id="membership" class="page"><h2>Membership</h2><div class="card">Content will be updated soon.</div></div>
-<div id="news" class="page"><h2>News/Events</h2><div class="card">Content will be updated soon.</div></div>
-<div id="newsletter" class="page"><h2>Newsletter</h2><div class="card">Content will be updated soon.</div></div>
-<div id="doctor" class="page"><h2>Doctor Consultation</h2><div class="card">Content will be updated soon.</div></div>
-<div id="delivery" class="page"><h2>Delivery Info</h2><div class="card">Content will be updated soon.</div></div>
-<div id="reminders" class="page"><h2>Medicine Reminders</h2><div class="card">Content will be updated soon.</div></div>
-<div id="calculator" class="page"><h2>Health Calculator</h2><div class="card">Content will be updated soon.</div></div>
-<div id="special" class="page"><h2>Special Categories</h2><div class="card">Content will be updated soon.</div></div>
-<div id="notifications" class="page"><h2>User Notifications</h2><div class="card">Content will be updated soon.</div></div>
-<div id="events" class="page"><h2>Events Calendar</h2><div class="card">Content will be updated soon.</div></div>
+<!-- Realistic Content Pages -->
+<div id="orders" class="page"><h2>Orders</h2>
+<div class="card">All customer orders will appear here. Track order status, delivery, and payment details in real-time.</div></div>
+
+<div id="offers" class="page"><h2>Offers</h2>
+<div class="card"><b>Current Offers:</b><ul>
+<li>20% off on all cough syrups</li>
+<li>Buy 2 Vitamin C bottles, get 1 free</li>
+<li>Free blood pressure checkup with medicine purchase above Rs 1000</li>
+<li>Seasonal allergy special discounts on antihistamines</li>
+</ul></div></div>
+
+<div id="blog" class="page"><h2>Health Tips</h2>
+<div class="card"><ul>
+<li>Drink plenty of water to stay hydrated.</li>
+<li>Take medicines as prescribed, do not skip doses.</li>
+<li>Maintain a balanced diet rich in vitamins and minerals.</li>
+<li>Check expiry dates of medicines before use.</li>
+<li>Wash hands regularly to prevent infections.</li>
+<li>Keep a medicine reminder for daily doses.</li>
+</ul></div></div>
+
+<div id="about" class="page"><h2>About Us</h2>
+<div class="card">Shayan Pharmacy has been serving the community since 2005. Our mission is to provide genuine medicines, health guidance, and trusted service to our customers. Our pharmacists are certified and available for consultations.</div></div>
+
+<div id="contact" class="page"><h2>Contact</h2>
+<div class="card">
+<p><b>Address:</b> Karachi, Pakistan</p>
+<p><b>Phone:</b> 0321-XXXXXXX</p>
+<p><b>Email:</b> info@shayanpharmacy.com</p>
+<p><b>WhatsApp Orders:</b> 0321-XXXXXXX</p>
+</div></div>
+
+<div id="faq" class="page"><h2>FAQ</h2>
+<div class="card"><ul>
+<li><b>Q:</b> Do you deliver medicines at home? <br><b>A:</b> Yes, we offer home delivery within Karachi.</li>
+<li><b>Q:</b> Can I consult a pharmacist online? <br><b>A:</b> Yes, Doctor Consultation page allows online guidance.</li>
+<li><b>Q:</b> Are all medicines genuine? <br><b>A:</b> Absolutely, all our medicines are sourced from certified suppliers.</li>
+<li><b>Q:</b> Do you provide prescription reminders? <br><b>A:</b> Yes, our Medicine Reminders page helps you stay on track.</li>
+</ul></div></div>
+
+<div id="delivery" class="page"><h2>Delivery Info</h2>
+<div class="card">We provide quick and reliable delivery across Karachi. Standard delivery takes 24-48 hours. Special delivery for urgent prescriptions can be arranged on request. All orders are tracked in real-time.</div></div>
+
+<div id="doctor" class="page"><h2>Doctor Consultation</h2>
+<div class="card">Our certified pharmacists and doctors provide consultation for prescription guidance, dosage, and minor ailments. Book an appointment online or contact us via WhatsApp/Phone for instant consultation.</div></div>
+
+</div>
 
 <script>
 // ----- Login -----
@@ -320,6 +257,5 @@ function filterAndSort(){
   });
 }
 </script>
-
 </body>
 </html>
