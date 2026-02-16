@@ -1,291 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Shayan Pharmacy</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<title>Shayan Pharmacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --primary:#0d6efd;
-  --secondary:#084298;
-  --bg:#f0f2f5;
-  --card:#fff;
-  --text:#333;
-}
 body{
   margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  transition:0.3s;
-}
-body.dark{
-  --bg:#1c1c1c;
-  --card:#2c2c2c;
-  --text:#fff;
-  --primary:#0d6efd;
-  --secondary:#084298;
+  font-family:'Poppins',sans-serif;
+  background-image:url('https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=1470&q=80');
+  background-size:cover;
+  background-attachment:fixed;
+  color:#333;
 }
 .sidebar{
-  width:230px;
-  height:100vh;
-  background:var(--primary);
-  position:fixed;
-  padding-top:20px;
+  width:230px; height:100vh; position:fixed; top:0; left:0;
+  background:rgba(0,0,0,0.6); padding-top:20px; backdrop-filter:blur(5px);
 }
-.sidebar h2{color:white;text-align:center;margin-bottom:30px;}
+.sidebar h2{color:white; text-align:center; margin-bottom:30px;}
 .sidebar a{
-  display:block;
-  color:white;
-  padding:12px;
-  text-decoration:none;
-  font-weight:600;
-  border-radius:6px;
-  margin:5px;
+  display:block; color:white; padding:12px; text-decoration:none; font-weight:600; margin:5px; border-radius:6px;
+  transition:0.2s;
 }
-.sidebar a.active, .sidebar a:hover{background:var(--secondary);}
-.main{margin-left:230px;padding:20px;}
+.sidebar a:hover{background:rgba(255,255,255,0.2);}
+.main{margin-left:230px; padding:20px;}
 .card{
-  background:var(--card);
-  padding:15px;
-  border-radius:12px;
-  margin:10px 0;
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
-  transition:0.3s, transform 0.2s;
+  background:rgba(255,255,255,0.85); padding:15px; border-radius:12px; margin:10px 0; box-shadow:0 6px 16px rgba(0,0,0,0.2);
 }
-.card:hover{transform:translateY(-3px);}
 button{
-  padding:8px 15px;
-  border:none;
-  border-radius:6px;
-  background:var(--primary);
-  color:white;
-  cursor:pointer;
-  margin-top:5px;
-  transition:0.2s;
+  padding:8px 15px; border:none; border-radius:6px; background:#0d6efd; color:white; cursor:pointer;
 }
-button:hover{background:var(--secondary);}
-input{
-  padding:8px;
-  margin:5px 0;
-  width:100%;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-h2,h3{color:var(--text);}
-a.whatsappBtn{
-  text-decoration:none;
-  display:inline-block;
-  margin-top:5px;
-  padding:8px 12px;
-  background:#25d366;
-  color:white;
-  border-radius:6px;
-  transition:0.2s;
-}
-a.whatsappBtn:hover{background:#1da851;}
-.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;}
-.stat{background:var(--primary);color:white;padding:20px;border-radius:12px;text-align:center;transition:0.3s;}
-@media(max-width:768px){
-  .sidebar{width:100%;height:auto;position:relative;}
-  .main{margin-left:0;}
-}
+button:hover{background:#6c63ff;}
+input{padding:8px; margin:5px 0; width:100%; border-radius:6px; border:1px solid #ccc;}
+img.medImg{width:100%; height:150px; object-fit:cover; border-radius:10px;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:10px;border-bottom:1px solid #ccc;text-align:left;}
+th{background:#0d6efd;color:white;border-radius:6px;}
 </style>
 </head>
 <body>
 
-<div class="sidebar" id="sidebar">
+<div class="sidebar">
 <h2>Shayan Pharmacy</h2>
-<a onclick="showPage('home')" id="link-home">Dashboard</a>
-<a onclick="showPage('medicines')" id="link-medicines">Medicines</a>
-<a onclick="showPage('orders')" id="link-orders">Orders</a>
-<a onclick="showPage('prescription')" id="link-prescription">Prescription</a>
-<a onclick="toggleDark()">Toggle Dark Mode</a>
-<a onclick="adminAccess()" id="link-admin">Admin Panel</a>
+<a onclick="showPage('home')">Dashboard</a>
+<a onclick="showPage('medicines')">Medicines</a>
+<a onclick="showPage('orders')">Orders</a>
+<a onclick="showPage('admin')">Admin Panel</a>
 </div>
 
 <div class="main">
 
-<!-- DASHBOARD -->
 <div id="home" class="page">
 <h2>Dashboard</h2>
-<div class="dashboard">
-<div class="stat">Total Medicines: <span id="totalMeds">0</span></div>
-<div class="stat">Total Orders: <span id="totalOrders">0</span></div>
-<div class="stat">Cart Items: <span id="cartCount">0</span></div>
-</div>
-<canvas id="ordersChart" style="max-width:600px;margin-top:30px;"></canvas>
+<div class="card">Total Medicines: <span id="totalMeds">0</span></div>
+<div class="card">Cart Items: <span id="cartCount">0</span></div>
 </div>
 
-<!-- MEDICINES -->
 <div id="medicines" class="page" style="display:none;">
 <h2>Medicines</h2>
 <input type="text" id="search" placeholder="Search Medicine" onkeyup="searchMedicine()">
 <div id="medicineList"></div>
-<h3>Cart</h3>
 <div class="card">
 Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</span><br>
 <button onclick="placeOrder()">Place Order</button>
 </div>
 </div>
 
-<!-- ORDERS -->
 <div id="orders" class="page" style="display:none;">
 <h2>Orders</h2>
 <ul id="orderList"></ul>
-<a id="whatsappBtn" target="_blank" class="whatsappBtn">Send Order on WhatsApp</a>
-<br><br>
-<button onclick="printInvoice()">Print Invoice</button>
-<div id="invoiceBox" style="display:none;">
-<h2>Shayan Pharmacy Invoice</h2>
-<pre id="invoiceData"></pre>
-</div>
+<a id="whatsappBtn" target="_blank">Send Order on WhatsApp</a>
 </div>
 
-<!-- PRESCRIPTION -->
-<div id="prescription" class="page" style="display:none;">
-<h2>Upload Prescription</h2>
-<input type="file">
-</div>
-
-<!-- ADMIN PANEL -->
 <div id="admin" class="page" style="display:none;">
 <h2>Admin Panel</h2>
-<input type="text" id="medName" placeholder="Medicine Name">
+<table>
+<thead><tr><th>Name</th><th>Price</th><th>Image</th><th>Actions</th></tr></thead>
+<tbody id="adminMedList"></tbody>
+</table>
+<h3>Add / Update Medicine</h3>
+<input type="text" id="medName" placeholder="Name">
 <input type="number" id="medPrice" placeholder="Price">
-<button onclick="addMedicine()">Add Medicine</button>
+<input type="text" id="medImageURL" placeholder="Image URL">
+<button onclick="addOrUpdateMedicine()">Add / Update</button>
 </div>
 
 </div>
 
 <script>
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "API_KEY",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  projectId: "PROJECT_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// Pages
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.style.display='none'); document.getElementById(id).style.display='block';}
 
-// GLOBALS
-var cart=[];
+// Dummy Medicines
+var medicines=[
+{name:"Paracetamol",price:50,image:"https://images.unsplash.com/photo-1604014232412-9d153f9fc2e1?auto=format&fit=crop&w=500&q=60"},
+{name:"Ibuprofen",price:80,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Amoxicillin",price:120,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Vitamin C",price:60,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Cough Syrup",price:90,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Antacid",price:40,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Aspirin",price:70,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Metformin",price:200,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Loratadine",price:150,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Cetirizine",price:120,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Insulin",price:300,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Multivitamin",price:250,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Zinc Tablet",price:90,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Omega 3",price:300,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Diclofenac",price:110,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Azithromycin",price:250,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Omeprazole",price:180,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Levothyroxine",price:220,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Hydrochlorothiazide",price:100,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Prednisone",price:190,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Salbutamol",price:120,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Flu Vaccine",price:500,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Insulin Syringe",price:150,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Hydrocortisone",price:200,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Antihistamine",price:80,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Probiotics",price:300,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Calcium Tablet",price:120,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Magnesium",price:150,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Folic Acid",price:100,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"},
+{name:"Iron Tablets",price:140,image:"https://images.unsplash.com/photo-1588776814546-1d93f1f0fc29?auto=format&fit=crop&w=500&q=60"}
+];
 
-// SHOW PAGE
-function showPage(id){
-  var pages=document.getElementsByClassName("page");
-  for(var i=0;i<pages.length;i++) pages[i].style.display="none";
-  document.getElementById(id).style.display="block";
-  var links=document.querySelectorAll(".sidebar a");
-  links.forEach(l=>l.classList.remove("active"));
-  if(document.getElementById("link-"+id)) document.getElementById("link-"+id).classList.add("active");
-}
-
-// DARK MODE
-function toggleDark(){document.body.classList.toggle("dark");}
-
-// LOAD MEDICINES
+// Load Medicines
 function loadMedicines(){
-  db.collection("medicines").get().then(snapshot=>{
-    var list=document.getElementById("medicineList"); list.innerHTML="";
-    snapshot.forEach(doc=>{
-      var med=doc.data();
-      var div=document.createElement("div"); div.className="card med";
-      div.innerHTML=`<b>${med.name}</b><br>Rs ${med.price}<br>
-      <button onclick="addToCart('${med.name}',${med.price})">Add to Cart</button>`;
-      list.appendChild(div);
-    });
-    document.getElementById("totalMeds").innerText=snapshot.size;
+  var list=document.getElementById("medicineList");
+  var adminList=document.getElementById("adminMedList");
+  list.innerHTML=""; adminList.innerHTML="";
+  document.getElementById("totalMeds").innerText=medicines.length;
+  medicines.forEach((m,i)=>{
+    // Medicine Page
+    let div=document.createElement("div"); div.className="card";
+    div.innerHTML=`<img class="medImg" src="${m.image}"><b>${m.name}</b><br>Rs ${m.price}<br><button onclick="addToCart(${i})">Add to Cart</button>`;
+    list.appendChild(div);
+    // Admin Table
+    let tr=document.createElement("tr");
+    tr.innerHTML=`<td>${m.name}</td><td>${m.price}</td><td><img src="${m.image}" width="60"></td>
+    <td><button onclick="deleteMedicine(${i})">Delete</button></td>`;
+    adminList.appendChild(tr);
   });
 }
 
-// SEARCH
+// Search
 function searchMedicine(){
-  var input=document.getElementById("search").value.toLowerCase();
-  var cards=document.getElementsByClassName("med");
-  for(var i=0;i<cards.length;i++){
-    cards[i].style.display=cards[i].innerText.toLowerCase().includes(input)?"block":"none";
-  }
+  let val=document.getElementById("search").value.toLowerCase();
+  document.querySelectorAll('#medicineList .card').forEach((c,i)=>{
+    c.style.display=medicines[i].name.toLowerCase().includes(val)?'block':'none';
+  });
 }
 
-// CART
-function addToCart(name,price){cart.push({name,price});updateCart();}
+// Cart
+var cart=[];
+function addToCart(idx){cart.push(medicines[idx]); updateCart();}
 function updateCart(){
-  var total=0; cart.forEach(item=>total+=item.price);
+  let total=0; cart.forEach(c=>total+=c.price);
   document.getElementById("cartCount").innerText=cart.length;
   document.getElementById("cartCount2").innerText=cart.length;
   document.getElementById("cartTotal").innerText=total;
 }
 
-// PLACE ORDER
-function placeOrder(){
-  if(cart.length==0){ alert("Cart empty"); return; }
-  db.collection("orders").add({items:cart,date:new Date().toLocaleString()})
-  .then(()=>{alert("Order Placed"); generateInvoice(); cart=[]; updateCart(); loadOrders(); updateDashboard();});
-}
-
-// LOAD ORDERS + CHART
-function loadOrders(){
-  db.collection("orders").get().then(snapshot=>{
-    var list=document.getElementById("orderList"); list.innerHTML="";
-    var chartLabels=[],chartData=[];
-    snapshot.forEach(doc=>{
-      var order=doc.data();
-      var li=document.createElement("li");
-      li.innerText=`${order.date} | Items: ${order.items.map(i=>i.name).join(", ")} | Total: Rs ${order.items.reduce((a,b)=>a+b.price,0)}`;
-      list.appendChild(li);
-      chartLabels.push(order.date); chartData.push(order.items.reduce((a,b)=>a+b.price,0));
-    });
-    document.getElementById("totalOrders").innerText=snapshot.size;
-    var ctx=document.getElementById("ordersChart").getContext("2d");
-    if(window.ordersChart) window.ordersChart.destroy();
-    window.ordersChart=new Chart(ctx,{type:'bar',data:{labels:chartLabels,datasets:[{label:'Order Amount',data:chartData,backgroundColor:'#0d6efd'}]}});
+// Orders
+var orders=[];
+function placeOrder(){ if(cart.length==0){alert("Cart empty"); return;}
+orders.push([...cart]); cart=[]; updateCart(); alert("Order placed"); generateInvoice();}
+function generateInvoice(){
+  let text="Shayan Pharmacy Order\n";
+  orders[orders.length-1].forEach(i=>text+=`${i.name} - Rs ${i.price}\n`);
+  text+="Total: Rs "+orders[orders.length-1].reduce((a,b)=>a+b.price,0);
+  document.getElementById("invoiceData").innerText=text;
+  document.getElementById("whatsappBtn").href="https://wa.me/923XXXXXXXXX?text="+encodeURIComponent(text);
+  // show orders
+  let list=document.getElementById("orderList"); list.innerHTML="";
+  orders.forEach((o,idx)=>{
+    let li=document.createElement("li");
+    li.innerText=`Order ${idx+1}: ${o.map(x=>x.name).join(", ")} | Rs ${o.reduce((a,b)=>a+b.price,0)}`;
+    list.appendChild(li);
   });
 }
 
-// INVOICE
-function generateInvoice(){
-  var text="Shayan Pharmacy Order\n"; cart.forEach(item=> text+=`${item.name} - Rs ${item.price}\n`);
-  text+="Total: Rs "+cart.reduce((a,b)=>a+b.price,0);
-  document.getElementById("invoiceData").innerText=text;
-  var number="923XXXXXXXXX";
-  document.getElementById("whatsappBtn").href="https://wa.me/"+number+"?text="+encodeURIComponent(text);
-}
-function printInvoice(){var content=document.getElementById("invoiceBox").innerHTML; var win=window.open();win.document.write(content);win.print();win.close();}
+// Admin Panel PIN
+const adminPin="1234";
+function adminAccess(){let pin=prompt("1234"); if(pin===adminPin) showPage('admin'); else alert("Wrong PIN");}
 
-// ADMIN PIN
-const adminPin = "1234";
-function adminAccess(){
-  let pin = prompt("Enter Admin PIN:");
-  if(pin === adminPin){
-    showPage('admin');
-    document.getElementById("admin").style.display="block";
-  } else {
-    alert("Incorrect PIN! Access Denied.");
-  }
-}
-document.getElementById("admin").style.display="none";
-
-// ADMIN ADD MEDICINE
-function addMedicine(){
-  var name=document.getElementById("medName").value;
-  var price=parseInt(document.getElementById("medPrice").value);
-  db.collection("medicines").add({name:name,price:price}).then(()=>{alert("Medicine Added"); loadMedicines(); updateDashboard();});
+// Admin Add / Update
+function addOrUpdateMedicine(){
+  let name=document.getElementById("medName").value;
+  let price=parseInt(document.getElementById("medPrice").value);
+  let image=document.getElementById("medImageURL").value;
+  if(!name||!price||!image){alert("Enter all fields"); return;}
+  medicines.push({name,price,image});
+  loadMedicines();
+  alert("Medicine Added");
 }
 
-// DASHBOARD UPDATE
-function updateDashboard(){document.getElementById("totalMeds").innerText=document.getElementsByClassName("med").length;}
+// Admin Delete
+function deleteMedicine(idx){ if(confirm("Delete this medicine?")){medicines.splice(idx,1); loadMedicines();}}
 
-// INITIALIZE
-loadMedicines(); loadOrders(); showPage('home');
+// Init
+loadMedicines();
 </script>
-
 </body>
 </html>
