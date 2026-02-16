@@ -1,356 +1,309 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shayan Pharmacy Store</title>
+<title>Shayan Pharmacy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
-<!-- Chart.js (For Sales Chart) -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- Styles -->
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+:root{
+  --primary:#0d6efd;
+  --secondary:#084298;
+  --bg:#f0f2f5;
+  --card:#fff;
+  --text:#333;
+  --text-light:#fff;
 }
-
-body {
-    background: linear-gradient(to right, #e0f7fa, #ffffff);
-    transition: 0.4s;
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:0.3s;
 }
-
-.dark {
-    background: #121212;
-    color: white;
+body.dark{
+  --bg:#1c1c1c;
+  --card:#2c2c2c;
+  --text:#fff;
+  --primary:#0d6efd;
+  --secondary:#084298;
 }
-
-header {
-    background: #0a9396;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    font-size: 32px;
-    font-weight: bold;
+.sidebar{
+  width:230px;
+  height:100vh;
+  background:var(--primary);
+  position:fixed;
+  padding-top:20px;
+  transition:0.3s;
 }
-
-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background: #0a9396;
-    color: white;
-    margin: 5px 0;
+.sidebar h2{color:white;text-align:center;margin-bottom:30px;}
+.sidebar a{
+  display:block;
+  color:white;
+  padding:12px;
+  text-decoration:none;
+  font-weight:600;
+  border-radius:6px;
+  margin:5px;
+  transition:0.2s;
 }
-
-button:hover {
-    opacity: 0.8;
+.sidebar a.active, .sidebar a:hover{background:var(--secondary);}
+.main{margin-left:230px;padding:20px;transition:0.3s;}
+.card{
+  background:var(--card);
+  padding:15px;
+  border-radius:12px;
+  margin:10px 0;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  transition:0.3s, transform 0.2s;
 }
-
-.container {
-    padding: 20px;
+.card:hover{transform:translateY(-3px);}
+button{
+  padding:8px 15px;
+  border:none;
+  border-radius:6px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  margin-top:5px;
+  transition:0.2s;
 }
-
-.section {
-    background: white;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 10px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+button:hover{background:var(--secondary);}
+input{
+  padding:8px;
+  margin:5px 0;
+  width:100%;
+  border-radius:6px;
+  border:1px solid #ccc;
 }
-
-.dark .section {
-    background: #1e1e1e;
+h2,h3{color:var(--text);}
+a.whatsappBtn{
+  text-decoration:none;
+  display:inline-block;
+  margin-top:5px;
+  padding:8px 12px;
+  background:#25d366;
+  color:white;
+  border-radius:6px;
+  transition:0.2s;
 }
-
-#adminPanel {
-    display: none;
+a.whatsappBtn:hover{background:#1da851;}
+.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;}
+.stat{background:var(--primary);color:white;padding:20px;border-radius:12px;text-align:center;transition:0.3s;}
+@media(max-width:768px){
+  .sidebar{width:100%;height:auto;position:relative;}
+  .main{margin-left:0;}
 }
-
-/* Sales Chart */
-.chart-container {
-    max-width: 800px;
-    margin: 30px auto;
-}
-
-/* Mobile-Responsive */
-@media screen and (max-width: 768px) {
-    header {
-        font-size: 26px;
-    }
-
-    .section {
-        margin: 10px 0;
-    }
-
-    .chart-container {
-        width: 100%;
-    }
-}
-
 </style>
 </head>
-
 <body>
 
-<header>Shayan Pharmacy Store</header>
-
-<button class="toggle" onclick="toggleDark()">🌙 Dark Mode</button>
-
-<div class="container">
-
-<!-- CUSTOMER SAVE -->
-<div class="section">
-<h2>Customer Details</h2>
-<input type="text" id="cname" placeholder="Customer Name">
-<input type="text" id="cno" placeholder="Consumer Number">
-<input type="text" id="caddress" placeholder="Address">
-<button onclick="saveCustomer()">Save Customer</button>
+<!-- LOGIN -->
+<div id="loginBox" style="text-align:center;margin-top:80px;">
+<h2>Shayan Pharmacy Login</h2>
+<input type="email" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
 </div>
 
-<!-- BLOOD DATABASE -->
-<div class="section">
-<h2>Blood Donation Database</h2>
-<input type="text" id="bname" placeholder="Donor Name">
-<select id="bgroup">
-    <option>A+</option>
-    <option>A-</option>
-    <option>B+</option>
-    <option>B-</option>
-    <option>O+</option>
-    <option>O-</option>
-    <option>AB+</option>
-    <option>AB-</option>
-</select>
-<button onclick="saveBlood()">Add Donor</button>
+<!-- MAIN -->
+<div id="main" style="display:none;">
+
+<div class="sidebar" id="sidebar">
+<h2>Shayan Pharmacy</h2>
+<a onclick="showPage('home')" id="link-home">Dashboard</a>
+<a onclick="showPage('medicines')" id="link-medicines">Medicines</a>
+<a onclick="showPage('orders')" id="link-orders">Orders</a>
+<a onclick="showPage('prescription')" id="link-prescription">Prescription</a>
+<a onclick="showPage('admin')" id="link-admin">Admin Panel</a>
+<a onclick="toggleDark()">Toggle Dark Mode</a>
+<a onclick="logout()">Logout</a>
 </div>
 
-<!-- INVOICE -->
-<div class="section">
-<h2>Generate Invoice</h2>
-<input type="text" id="mname" placeholder="Medicine Name">
-<input type="number" id="price" placeholder="Price">
-<input type="number" id="qty" placeholder="Quantity">
-<button onclick="generateInvoice()">Generate & Save</button>
-<div id="invoiceResult"></div>
-<button onclick="printInvoice()">🖨 Print Invoice</button>
+<div class="main">
+
+<!-- DASHBOARD -->
+<div id="home" class="page">
+<h2>Dashboard</h2>
+<div class="dashboard">
+<div class="stat">Total Medicines: <span id="totalMeds">0</span></div>
+<div class="stat">Total Orders: <span id="totalOrders">0</span></div>
+<div class="stat">Cart Items: <span id="cartCount">0</span></div>
+</div>
+<canvas id="ordersChart" style="max-width:600px;margin-top:30px;"></canvas>
 </div>
 
-<!-- ADMIN LOGIN -->
-<div class="section">
-<h2>Admin Login</h2>
-<input type="password" id="adminPass" placeholder="Enter Admin Password">
-<button onclick="adminLogin()">Login</button>
+<!-- MEDICINES -->
+<div id="medicines" class="page" style="display:none;">
+<h2>Medicines</h2>
+<input type="text" id="search" placeholder="Search Medicine" onkeyup="searchMedicine()">
+<div id="medicineList"></div>
+<h3>Cart</h3>
+<div class="card">
+Cart Items: <span id="cartCount2">0</span> | Total: Rs <span id="cartTotal">0</span><br>
+<button onclick="placeOrder()">Place Order</button>
+</div>
+</div>
+
+<!-- ORDERS -->
+<div id="orders" class="page" style="display:none;">
+<h2>Orders</h2>
+<ul id="orderList"></ul>
+<a id="whatsappBtn" target="_blank" class="whatsappBtn">Send Order on WhatsApp</a>
+<br><br>
+<button onclick="printInvoice()">Print Invoice</button>
+<div id="invoiceBox" style="display:none;">
+<h2>Shayan Pharmacy Invoice</h2>
+<pre id="invoiceData"></pre>
+</div>
+</div>
+
+<!-- PRESCRIPTION -->
+<div id="prescription" class="page" style="display:none;">
+<h2>Upload Prescription</h2>
+<input type="file">
 </div>
 
 <!-- ADMIN PANEL -->
-<div class="section" id="adminPanel">
+<div id="admin" class="page" style="display:none;">
 <h2>Admin Panel</h2>
-
-<h3>Customers</h3>
-<table id="customerTable"></table>
-
-<h3>Blood Donors</h3>
-<table id="bloodTable"></table>
-
-<h3>Invoices</h3>
-<table id="invoiceTable"></table>
-
-<h3>Sales Chart</h3>
-<div class="chart-container">
-    <canvas id="salesChart"></canvas>
+<input type="text" id="medName" placeholder="Medicine Name">
+<input type="number" id="medPrice" placeholder="Price">
+<button onclick="addMedicine()">Add Medicine</button>
 </div>
 
 </div>
-
 </div>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
 <script>
-// Firebase Configuration (You need to replace this with your own Firebase credentials)
-var firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "API_KEY",
+  authDomain: "PROJECT_ID.firebaseapp.com",
+  projectId: "PROJECT_ID"
 };
-
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
+const db = firebase.firestore();
 
-// Dark Mode Toggle
-function toggleDark() {
-    document.body.classList.toggle("dark");
+// GLOBALS
+var cart=[];
+var orders=[];
+
+// LOGIN
+function login(){
+  var email=document.getElementById("email").value;
+  var password=document.getElementById("password").value;
+  firebase.auth().signInWithEmailAndPassword(email,password)
+  .then(userCredential=>{
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("sidebar").style.display="block";
+    if(email=="admin@gmail.com") document.getElementById("admin").style.display="block";
+    loadMedicines(); loadOrders(); updateDashboard(); showPage('home');
+  }).catch(err=>alert(err.message));
 }
 
-// Save Customer Data
-function saveCustomer() {
-    let customers = JSON.parse(localStorage.getItem("customers")) || [];
-    customers.push({
-        name: cname.value,
-        no: cno.value,
-        address: caddress.value
+// LOGOUT
+function logout(){firebase.auth().signOut();location.reload();}
+
+// PAGE SWITCH
+function showPage(id){
+  var pages=document.getElementsByClassName("page");
+  for(var i=0;i<pages.length;i++) pages[i].style.display="none";
+  document.getElementById(id).style.display="block";
+  var links=document.querySelectorAll(".sidebar a");
+  links.forEach(l=>l.classList.remove("active"));
+  if(document.getElementById("link-"+id)) document.getElementById("link-"+id).classList.add("active");
+}
+
+// DARK MODE TOGGLE
+function toggleDark(){document.body.classList.toggle("dark");}
+
+// LOAD MEDICINES
+function loadMedicines(){
+  db.collection("medicines").get().then(snapshot=>{
+    var list=document.getElementById("medicineList"); list.innerHTML="";
+    snapshot.forEach(doc=>{
+      var med=doc.data();
+      var div=document.createElement("div"); div.className="card med";
+      div.innerHTML=`<b>${med.name}</b><br>Rs ${med.price}<br>
+      <button onclick="addToCart('${med.name}',${med.price})">Add to Cart</button>`;
+      list.appendChild(div);
     });
-    localStorage.setItem("customers", JSON.stringify(customers));
-    alert("Customer Saved!");
+    document.getElementById("totalMeds").innerText=snapshot.size;
+  });
 }
 
-// Save Blood Donor Data
-function saveBlood() {
-    let donors = JSON.parse(localStorage.getItem("donors")) || [];
-    donors.push({
-        name: bname.value,
-        group: bgroup.value
+// SEARCH
+function searchMedicine(){
+  var input=document.getElementById("search").value.toLowerCase();
+  var cards=document.getElementsByClassName("med");
+  for(var i=0;i<cards.length;i++){
+    cards[i].style.display=cards[i].innerText.toLowerCase().includes(input)?"block":"none";
+  }
+}
+
+// CART
+function addToCart(name,price){cart.push({name,price});updateCart();}
+function updateCart(){
+  var total=0; cart.forEach(item=>total+=item.price);
+  document.getElementById("cartCount").innerText=cart.length;
+  document.getElementById("cartCount2").innerText=cart.length;
+  document.getElementById("cartTotal").innerText=total;
+}
+
+// PLACE ORDER
+function placeOrder(){
+  if(cart.length==0){ alert("Cart empty"); return; }
+  db.collection("orders").add({items:cart,date:new Date().toLocaleString()})
+  .then(()=>{alert("Order Placed"); generateInvoice(); cart=[]; updateCart(); loadOrders(); updateDashboard();});
+}
+
+// LOAD ORDERS + CHART
+function loadOrders(){
+  db.collection("orders").get().then(snapshot=>{
+    var list=document.getElementById("orderList"); list.innerHTML="";
+    var chartLabels=[],chartData=[];
+    snapshot.forEach(doc=>{
+      var order=doc.data();
+      var li=document.createElement("li");
+      li.innerText=`${order.date} | Items: ${order.items.map(i=>i.name).join(", ")} | Total: Rs ${order.items.reduce((a,b)=>a+b.price,0)}`;
+      list.appendChild(li);
+      chartLabels.push(order.date); chartData.push(order.items.reduce((a,b)=>a+b.price,0));
     });
-    localStorage.setItem("donors", JSON.stringify(donors));
-    alert("Donor Added!");
+    document.getElementById("totalOrders").innerText=snapshot.size;
+    var ctx=document.getElementById("ordersChart").getContext("2d");
+    if(window.ordersChart) window.ordersChart.destroy();
+    window.ordersChart=new Chart(ctx,{type:'bar',data:{labels:chartLabels,datasets:[{label:'Order Amount',data:chartData,backgroundColor:'#0d6efd'}]}});
+  });
 }
 
-// Generate Invoice and Save
-function generateInvoice() {
-    let total = price.value * qty.value;
-    let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-    invoices.push({
-        medicine: mname.value,
-        price: price.value,
-        qty: qty.value,
-        total: total
-    });
-    localStorage.setItem("invoices", JSON.stringify(invoices));
+// INVOICE
+function generateInvoice(){
+  var text="Shayan Pharmacy Order\n"; cart.forEach(item=> text+=`${item.name} - Rs ${item.price}\n`);
+  text+="Total: Rs "+cart.reduce((a,b)=>a+b.price,0);
+  document.getElementById("invoiceData").innerText=text;
+  var number="923XXXXXXXXX";
+  document.getElementById("whatsappBtn").href="https://wa.me/"+number+"?text="+encodeURIComponent(text);
+}
+function printInvoice(){var content=document.getElementById("invoiceBox").innerHTML; var win=window.open();win.document.write(content);win.print();win.close();}
 
-    invoiceResult.innerHTML = `<h3>Total: Rs ${total}</h3>`;
+// ADMIN ADD MEDICINE
+function addMedicine(){
+  var name=document.getElementById("medName").value;
+  var price=parseInt(document.getElementById("medPrice").value);
+  db.collection("medicines").add({name:name,price:price}).then(()=>{alert("Medicine Added"); loadMedicines(); updateDashboard();});
 }
 
-// Print Invoice
-function printInvoice() {
-    window.print();
-}
-
-// Admin Login
-function adminLogin() {
-    if (adminPass.value === "1234") {
-        document.getElementById("adminPanel").style.display = "block";
-        loadData();
-        loadSalesChart();
-    } else {
-        alert("Wrong Password!");
-    }
-}
-
-// Load Data in Admin Panel
-function loadData() {
-    let customers = JSON.parse(localStorage.getItem("customers")) || [];
-    let donors = JSON.parse(localStorage.getItem("donors")) || [];
-    let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-
-    customerTable.innerHTML = "<tr><th>Name</th><th>No</th><th>Address</th><th>Delete</th></tr>";
-    customers.forEach((c, i) => {
-        customerTable.innerHTML += `<tr>
-            <td>${c.name}</td>
-            <td>${c.no}</td>
-            <td>${c.address}</td>
-            <td><button onclick="deleteCustomer(${i})">Delete</button></td>
-        </tr>`;
-    });
-
-    bloodTable.innerHTML = "<tr><th>Name</th><th>Group</th><th>Delete</th></tr>";
-    donors.forEach((d, i) => {
-        bloodTable.innerHTML += `<tr>
-            <td>${d.name}</td>
-            <td>${d.group}</td>
-            <td><button onclick="deleteDonor(${i})">Delete</button></td>
-        </tr>`;
-    });
-
-    invoiceTable.innerHTML = "<tr><th>Medicine</th><th>Price</th><th>Qty</th><th>Total</th><th>Delete</th></tr>";
-    invoices.forEach((inv, i) => {
-        invoiceTable.innerHTML += `<tr>
-            <td>${inv.medicine}</td>
-            <td>${inv.price}</td>
-            <td>${inv.qty}</td>
-            <td>${inv.total}</td>
-            <td><button onclick="deleteInvoice(${i})">Delete</button></td>
-        </tr>`;
-    });
-}
-
-// Sales Chart using Chart.js
-function loadSalesChart() {
-    const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-    const salesData = invoices.map(inv => inv.total);
-
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: Array.from({ length: salesData.length }, (_, i) => `Invoice ${i+1}`),
-            datasets: [{
-                label: 'Sales (Rs)',
-                data: salesData,
-                borderColor: 'rgba(0, 123, 255, 1)',
-                fill: false,
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Invoice Number'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Sales Amount'
-                    }
-                }
-            }
-        }
-    });
-}
-
-// Delete Functions
-function deleteCustomer(i) {
-    let customers = JSON.parse(localStorage.getItem("customers"));
-    customers.splice(i, 1);
-    localStorage.setItem("customers", JSON.stringify(customers));
-    loadData();
-}
-
-function deleteDonor(i) {
-    let donors = JSON.parse(localStorage.getItem("donors"));
-    donors.splice(i, 1);
-    localStorage.setItem("donors", JSON.stringify(donors));
-    loadData();
-}
-
-function deleteInvoice(i) {
-    let invoices = JSON.parse(localStorage.getItem("invoices"));
-    invoices.splice(i, 1);
-    localStorage.setItem("invoices", JSON.stringify(invoices));
-    loadData();
-}
-
-// Firebase Data Sync (Optional)
-// Use Firebase Firestore to sync data. For example:
-// db.collection("customers").add({
-//     name: "John Doe",
-//     address: "123 Main St"
-// });
-
+// DASHBOARD UPDATE
+function updateDashboard(){document.getElementById("totalMeds").innerText=document.getElementsByClassName("med").length;}
 </script>
 
 </body>
