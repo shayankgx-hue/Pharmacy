@@ -31,95 +31,31 @@ const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 </script>
 
-<!-- Login Page -->
-<div id="loginPage">
-<h2>Admin Login</h2>
-<div class="card" style="max-width:400px;margin:auto;">
-  <input type="email" id="login-email" placeholder="Email" required><br>
-  <input type="password" id="login-password" placeholder="Password" required><br>
-  <button onclick="login()">Login</button><br>
-  <p>Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
-</div>
-</div>
-
-<!-- Sign-Up Page -->
-<div id="signUpPage" style="display:none;">
-<h2>Admin Sign Up</h2>
-<div class="card" style="max-width:400px;margin:auto;">
-  <input type="email" id="signUp-email" placeholder="Email" required><br>
-  <input type="password" id="signUp-password" placeholder="Password" required><br>
-  <button onclick="signUp()">Sign Up</button>
-  <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
-</div>
-</div>
-
 <!-- Sidebar + Main -->
-<div class="sidebar" id="sidebar" style="display:none;">
+<div class="sidebar" id="sidebar">
   <h2>Shayan Pharmacy Admin</h2>
   <a onclick="showPage('dashboard')">Dashboard</a>
   <!-- Your other sidebar links -->
 </div>
 
-<div class="main" id="mainContent" style="display:none;">
-  <!-- Your main content here -->
+<div class="main" id="mainContent">
+  <!-- Dashboard content -->
+  <div id="dashboard" class="page">
+    <h1>Welcome to Shayan Pharmacy Dashboard</h1>
+    <!-- Your existing dashboard content here -->
+  </div>
+  <!-- Add other pages if needed, using class="page" -->
 </div>
 
 <script>
-// Show SignUp page
-function showSignUp() {
-  document.getElementById('loginPage').style.display = 'none';
-  document.getElementById('signUpPage').style.display = 'block';
-}
-
-// Show Login page
-function showLogin() {
-  document.getElementById('signUpPage').style.display = 'none';
-  document.getElementById('loginPage').style.display = 'block';
-}
-
-// Firebase Login Function
-function login() {
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Logged in successfully
-      const user = userCredential.user;
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('sidebar').style.display = 'block';
-      document.getElementById('mainContent').style.display = 'block';
-      showPage('dashboard');
-      console.log('User logged in: ', user);
-    })
-    .catch((error) => {
-      alert('Error: ' + error.message);
-    });
-}
-
-// Firebase SignUp Function
-function signUp() {
-  const email = document.getElementById('signUp-email').value;
-  const password = document.getElementById('signUp-password').value;
-
-  auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Signed up successfully
-      const user = userCredential.user;
-      alert('Sign-up successful!');
-      console.log('User signed up: ', user);
-      showLogin(); // Redirect to login page
-    })
-    .catch((error) => {
-      alert('Error: ' + error.message);
-    });
-}
-
-// Page navigation function (as per your existing code)
+// Show page function
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
   document.getElementById(id).style.display = 'block';
 }
+
+// Show dashboard by default
+showPage('dashboard');
 </script>
 
 </body>
